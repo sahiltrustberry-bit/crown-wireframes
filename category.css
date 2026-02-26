@@ -1,0 +1,158 @@
+/* ═══════════════════════════════════════════════════════════
+   CROWN — Category Page Shared Styles
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── CATEGORY HERO — Vitra-style scattered products ──────── */
+.category-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--white);
+}
+
+/* Scattered product images — positioned absolutely around the viewport */
+.scattered-products {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scattered-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--gray-400);
+  text-align: center;
+  line-height: 1.4;
+  padding: 6px;
+  border: 1px dashed var(--gray-200);
+  border-radius: 4px;
+  background: var(--gray-100);
+}
+
+/* Center content — headline + CTA */
+.category-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 600px;
+  padding: 0 24px;
+}
+
+.category-hero-content .heading-hero {
+  color: var(--black);
+  margin-bottom: 28px;
+}
+
+/* ─── PRODUCT LIST (Leibal-style alternate) ────────────────── */
+.product-list {
+  padding: 80px 0;
+}
+
+.product-list-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 60px 0;
+  border-bottom: 1px solid var(--gray-200);
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.product-list-item:hover { opacity: 0.85; }
+.product-list-item:first-child { padding-top: 0; }
+
+.product-list-item:nth-child(even) { direction: rtl; }
+.product-list-item:nth-child(even) > * { direction: ltr; }
+
+.product-list-item .img-placeholder {
+  height: 380px;
+  border-radius: 4px;
+}
+
+.product-list-info .caption { margin-bottom: 8px; color: var(--red); }
+.product-list-info .heading-product { margin-bottom: 12px; font-size: 28px; }
+
+.product-list-info .product-tagline {
+  font-size: 16px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  max-width: 380px;
+}
+
+.product-list-info .product-specs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.product-list-info .spec {
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.product-list-info .spec strong {
+  display: block;
+  font-size: 15px;
+  color: var(--black);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* ─── CATEGORY CROSS-SELL ──────────────────────────────────── */
+.cross-sell {
+  padding: 100px 0;
+  background: var(--gray-100);
+}
+
+.cross-sell-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 48px;
+}
+
+.cross-sell-card {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--transition);
+}
+
+.cross-sell-card:hover { transform: translateY(-4px); }
+
+.cross-sell-card .img-placeholder {
+  height: 300px;
+  border: none;
+  border-radius: 6px;
+}
+
+.cross-sell-card .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 20px;
+  background: linear-gradient(transparent, rgba(26,26,26,0.8));
+  color: var(--white);
+}
+
+.cross-sell-card .overlay h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cross-sell-card .overlay p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}

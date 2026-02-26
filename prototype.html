@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crown — Your Design. Our Surface.</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CROWN HIGH-FIDELITY WIREFRAME PROTOTYPE
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --red: #C41E3A;
+  --red-dark: #A01830;
+  --red-glow: rgba(196,30,58,0.15);
+  --gold: #D4A843;
+  --gold-light: rgba(212,168,67,0.15);
+  --black: #1A1A1A;
+  --white: #FFFFFF;
+  --g100: #F7F7F7;
+  --g200: #EBEBEB;
+  --g300: #D4D4D4;
+  --g400: #9B9B9B;
+  --g500: #666;
+  --body: #333;
+  --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --max-w: 1200px;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --nav-h: 80px;
+}
+
+html { scroll-behavior: smooth; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--g100); }
+::-webkit-scrollbar-thumb { background: var(--g300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+body {
+  font-family: var(--font);
+  color: var(--black);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
+
+/* ─── LOADING SCREEN ──────────────────────────────────────── */
+.loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 24px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-logo {
+  font-size: 32px; font-weight: 800; color: var(--white);
+  letter-spacing: 8px; text-transform: uppercase;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-sub {
+  font-size: 11px; font-weight: 500; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--red);
+}
+.loader-bar {
+  width: 120px; height: 2px; background: rgba(255,255,255,0.1);
+  border-radius: 1px; overflow: hidden; margin-top: 8px;
+}
+.loader-bar-fill {
+  height: 100%; width: 0; background: var(--red);
+  border-radius: 1px;
+  animation: loaderFill 1.8s var(--ease) forwards;
+}
+@keyframes loaderPulse { 0%,100%{ opacity:1; } 50%{ opacity:0.5; } }
+@keyframes loaderFill { 0%{ width:0; } 100%{ width:100%; } }
+
+/* ─── SCROLL ANIMATIONS ───────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left {
+  opacity: 0; transform: translateX(-40px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right {
+  opacity: 0; transform: translateX(40px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+.reveal-scale {
+  opacity: 0; transform: scale(0.95);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+/* Stagger delays */
+[data-delay="1"] { transition-delay: 0.1s; }
+[data-delay="2"] { transition-delay: 0.2s; }
+[data-delay="3"] { transition-delay: 0.3s; }
+[data-delay="4"] { transition-delay: 0.4s; }
+[data-delay="5"] { transition-delay: 0.5s; }
+
+/* ─── NAVIGATION ──────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0);
+  backdrop-filter: blur(0px);
+  transition: all 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--g200);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+}
+.nav-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: var(--nav-h); transition: height 0.4s var(--ease);
+}
+.nav.scrolled .nav-inner { height: 64px; }
+
+.nav-logo { display: flex; align-items: center; }
+.nav-logo img { height: 65px; transition: height 0.4s var(--ease); }
+.nav.scrolled .nav-logo img { height: 48px; }
+
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--g500);
+  transition: color 0.3s ease; letter-spacing: 0.02em;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1.5px; background: var(--red);
+  transition: width 0.3s var(--ease);
+}
+.nav-links a:hover { color: var(--black); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  padding: 10px 24px !important;
+  background: var(--red); color: var(--white) !important;
+  font-size: 11px !important; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: 3px; transition: all 0.3s ease;
+}
+.nav-cta::after { display: none !important; }
+.nav-cta:hover {
+  background: var(--red-dark) !important; color: var(--white) !important;
+  transform: translateY(-1px); box-shadow: 0 4px 16px rgba(196,30,58,0.3);
+}
+
+/* Hamburger */
+.nav-hamburger {
+  display: none; width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer; z-index: 1002;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--black); position: relative;
+  transition: all 0.3s ease;
+}
+.nav-hamburger span::before, .nav-hamburger span::after {
+  content: ''; position: absolute; width: 22px; height: 2px;
+  background: var(--black); left: 0; transition: all 0.3s ease;
+}
+.nav-hamburger span::before { top: -7px; }
+.nav-hamburger span::after { top: 7px; }
+.nav-hamburger.active span { background: transparent; }
+.nav-hamburger.active span::before { top: 0; transform: rotate(45deg); }
+.nav-hamburger.active span::after { top: 0; transform: rotate(-45deg); }
+
+.mobile-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); z-index: 998;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.mobile-overlay.active { opacity: 1; }
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 15px 38px; font-family: var(--font);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; border: none; border-radius: 3px;
+  cursor: pointer; transition: all 0.3s var(--ease);
+  position: relative; overflow: hidden;
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.1); transform: translateX(-100%);
+  transition: transform 0.4s var(--ease);
+}
+.btn:hover::before { transform: translateX(0); }
+
+.btn-primary { background: var(--red); color: var(--white); }
+.btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(196,30,58,0.35); }
+
+.btn-secondary { background: var(--black); color: var(--white); }
+.btn-secondary:hover { background: #000; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+
+.btn-tertiary { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
+.btn-tertiary:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+.btn-outline { background: transparent; color: var(--black); border: 1.5px solid var(--black); }
+.btn-outline:hover { background: var(--black); color: var(--white); }
+
+/* ─── IMAGE PLACEHOLDERS (polished) ───────────────────────── */
+.ph {
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  border-radius: 4px;
+}
+.ph-label {
+  position: absolute; bottom: 12px; left: 12px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  background: rgba(0,0,0,0.25); backdrop-filter: blur(8px);
+  padding: 5px 10px; border-radius: 3px;
+  max-width: calc(100% - 24px);
+}
+.ph::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.15) 100%);
+  pointer-events: none;
+}
+/* product placeholder — no gradient overlay */
+.ph-product::after { display: none; }
+.ph-product { align-items: center; justify-content: center; }
+.ph-product .ph-label { bottom: auto; left: auto; position: static; background: none; color: var(--g400); backdrop-filter: none; font-size: 11px; padding: 0; }
+
+/* ─── HERO CAROUSEL ───────────────────────────────────────── */
+.hero { position: relative; height: 100vh; min-height: 600px; overflow: hidden; }
+.hero-track { display: flex; height: 100%; transition: transform 0.8s var(--ease); }
+.hero-slide {
+  min-width: 100%; height: 100%; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  transition: transform 6s linear;
+}
+.hero-slide.active .hero-bg { transform: scale(1.03); }
+
+.hero-content {
+  position: relative; z-index: 2; text-align: center;
+  max-width: 620px; padding: 0 24px;
+}
+.hero-content h1 {
+  font-size: clamp(42px, 6vw, 72px); font-weight: 800;
+  line-height: 1.05; letter-spacing: -0.02em;
+  color: var(--black); margin-bottom: 28px;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s 0.2s var(--ease), transform 0.6s 0.2s var(--ease);
+}
+.hero-slide.active .hero-content h1 { opacity: 1; transform: translateY(0); }
+
+.hero-content .btn {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s 0.4s var(--ease), transform 0.5s 0.4s var(--ease),
+              background 0.3s ease, box-shadow 0.3s ease;
+}
+.hero-slide.active .hero-content .btn { opacity: 1; transform: translateY(0); }
+
+.hero-desc {
+  position: absolute; bottom: 80px; left: 0; right: 0;
+  z-index: 2; text-align: center; padding: 0 40px;
+}
+.hero-desc span {
+  display: inline-block; max-width: 680px;
+  font-size: 11px; line-height: 1.7; color: var(--g400);
+  letter-spacing: 0.01em;
+  opacity: 0; transition: opacity 0.5s 0.5s var(--ease);
+}
+.hero-slide.active .hero-desc span { opacity: 1; }
+
+/* Hero controls */
+.hero-arrows {
+  position: absolute; top: 50%; left: 0; right: 0; z-index: 3;
+  display: flex; justify-content: space-between; padding: 0 24px;
+  transform: translateY(-50%); pointer-events: none;
+}
+.hero-arrow {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.8); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; pointer-events: all;
+  font-size: 18px; color: var(--black);
+  transition: all 0.3s ease;
+}
+.hero-arrow:hover { background: var(--white); border-color: var(--black); transform: scale(1.05); }
+
+.hero-dots {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%); z-index: 3;
+  display: flex; gap: 10px;
+}
+.hero-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 1.5px solid var(--g400); background: transparent;
+  cursor: pointer; padding: 0; transition: all 0.3s ease;
+}
+.hero-dot.active { background: var(--red); border-color: var(--red); transform: scale(1.2); }
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 40px; z-index: 3;
+  display: flex; align-items: center; gap: 12px;
+}
+.scroll-mouse {
+  width: 20px; height: 30px; border: 1.5px solid var(--g400);
+  border-radius: 10px; position: relative;
+}
+.scroll-mouse::after {
+  content: ''; width: 3px; height: 6px;
+  background: var(--red); border-radius: 2px;
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+  animation: scrollWheel 2s infinite;
+}
+@keyframes scrollWheel { 0%{ top:6px; opacity:1; } 100%{ top:16px; opacity:0; } }
+.scroll-text { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g400); }
+
+/* ─── CREDIBILITY STRIP ───────────────────────────────────── */
+.cred-strip {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--g200); border-bottom: 1px solid var(--g200);
+}
+.cred-item {
+  padding: 36px 24px; text-align: center;
+  border-right: 1px solid var(--g200);
+  transition: background 0.3s ease;
+}
+.cred-item:last-child { border-right: none; }
+.cred-item:hover { background: var(--g100); }
+.cred-val {
+  font-size: 32px; font-weight: 800; color: var(--red);
+  margin-bottom: 6px; font-variant-numeric: tabular-nums;
+}
+.cred-label { font-size: 13px; font-weight: 500; color: var(--g500); }
+
+/* ─── PRODUCTS OVERVIEW ───────────────────────────────────── */
+.products-section { padding: 100px 0; background: var(--g100); }
+
+.section-head { text-align: center; margin-bottom: 56px; }
+.section-head .caption {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 14px;
+}
+.section-head h2 {
+  font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+  line-height: 1.15; letter-spacing: -0.01em;
+}
+.section-head p {
+  font-size: 16px; color: var(--g500); margin-top: 12px;
+  max-width: 520px; margin-left: auto; margin-right: auto;
+}
+
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+.cat-card {
+  background: var(--white); border-radius: 8px;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.cat-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+
+.cat-card .ph { height: 260px; border-radius: 0; }
+.cat-card .ph img-cover { object-fit: cover; }
+.cat-card-info { padding: 20px; }
+.cat-card-info h4 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.cat-card-info p { font-size: 13px; color: var(--g500); }
+.cat-card-info .arrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--red);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-top: 12px; transition: gap 0.3s ease;
+}
+.cat-card:hover .arrow { gap: 10px; }
+
+/* ─── CROWN CUSTOM SECTION ────────────────────────────────── */
+.custom-section { padding: 120px 0; }
+.custom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.custom-content .caption { color: var(--red); margin-bottom: 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.custom-content h2 { font-size: clamp(28px, 3.5vw, 40px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+.custom-content p { font-size: 16px; color: var(--g500); line-height: 1.7; margin-bottom: 32px; max-width: 460px; }
+
+.finish-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.finish-card {
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.finish-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.finish-card .ph { height: 140px; border-radius: 8px; }
+.finish-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; padding: 10px 0 0; color: var(--g500); }
+
+/* ─── STORY / PATH SECTIONS ───────────────────────────────── */
+.story { padding: 100px 0; }
+.story.dark { background: var(--black); color: var(--white); }
+.story.dark h2 { color: var(--white); }
+.story.dark p { color: var(--g400); }
+.story.dark .caption { color: var(--red); }
+.story.red { background: var(--red); color: var(--white); }
+.story.red p { color: rgba(255,255,255,0.8); }
+
+.story-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.story-grid.reverse { direction: rtl; }
+.story-grid.reverse > * { direction: ltr; }
+
+.story-text .caption { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g400); margin-bottom: 14px; }
+.story-text h2 { font-size: clamp(26px, 3.5vw, 40px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+.story-text p { font-size: 16px; color: var(--g500); line-height: 1.7; margin-bottom: 28px; max-width: 480px; }
+.story-text .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.story-img .ph { height: 460px; border-radius: 4px; }
+
+/* ─── DEALER LOCATOR ──────────────────────────────────────── */
+.locator { padding: 100px 0; background: var(--g100); }
+.locator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 48px; }
+
+.search-group { display: flex; gap: 10px; margin-bottom: 24px; }
+.search-input {
+  flex: 1; padding: 15px 20px; border: 2px solid var(--g200);
+  border-radius: 4px; font-size: 15px; font-family: var(--font);
+  color: var(--black); background: var(--white); outline: none;
+  transition: border-color 0.3s ease;
+}
+.search-input:focus { border-color: var(--red); }
+.search-input::placeholder { color: var(--g400); }
+
+.loc-stats { display: flex; gap: 32px; margin-top: 32px; }
+.loc-stat-val { font-size: 28px; font-weight: 800; color: var(--red); }
+.loc-stat-label { font-size: 13px; color: var(--g500); margin-top: 2px; }
+
+.map-ph .ph { height: 380px; border-radius: 8px; }
+
+/* ─── GUARANTEE BANNER ────────────────────────────────────── */
+.guarantee { padding: 80px 0; background: var(--black); text-align: center; position: relative; overflow: hidden; }
+.guarantee::before {
+  content: '3'; position: absolute;
+  font-size: 300px; font-weight: 800; color: rgba(255,255,255,0.02);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+.guarantee h2 { font-size: clamp(26px, 3.5vw, 40px); font-weight: 700; color: var(--white); margin-bottom: 12px; position: relative; }
+.guarantee p { font-size: 16px; color: var(--g400); margin-bottom: 28px; max-width: 480px; margin-left: auto; margin-right: auto; position: relative; }
+.guarantee .gold-line { width: 60px; height: 3px; background: var(--gold); margin: 0 auto 24px; border-radius: 2px; }
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+.footer { background: var(--black); padding: 80px 0 40px; color: var(--white); }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+.footer-brand img { height: 65px; margin-bottom: 14px; }
+.footer-brand .tagline { font-size: 14px; color: var(--g500); line-height: 1.6; max-width: 260px; }
+.footer-brand .iso { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.footer-brand .iso-badge {
+  width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px; display: flex; align-items: center; justify-content: center;
+  font-size: 8px; color: var(--g400); letter-spacing: 0.05em; text-transform: uppercase;
+}
+.footer-brand .iso span { font-size: 12px; color: var(--g500); }
+
+.footer-col h4 {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--g400); margin-bottom: 18px;
+}
+.footer-col a { display: block; font-size: 14px; color: var(--g500); margin-bottom: 10px; transition: color 0.3s ease; }
+.footer-col a:hover { color: var(--white); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom p { font-size: 12px; color: var(--g500); }
+.footer-bottom .tagline-tm { color: var(--g400); font-style: italic; }
+
+/* ─── WHATSAPP FAB ────────────────────────────────────────── */
+.wafab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  cursor: pointer; transition: all 0.3s ease; border: none;
+  opacity: 0; transform: scale(0.8) translateY(20px);
+  transition: all 0.4s var(--ease);
+}
+.wafab.visible { opacity: 1; transform: scale(1) translateY(0); }
+.wafab:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+.wafab svg { width: 28px; height: 28px; fill: #fff; }
+
+/* ─── PROGRESS BAR ────────────────────────────────────────── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--red); z-index: 1001;
+  width: 0; transition: width 0.1s linear;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+  .custom-grid { gap: 48px; }
+  .story-grid { gap: 48px; }
+  .footer-top { grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  :root { --nav-h: 60px; }
+  .container { padding: 0 20px; }
+  .nav-inner { padding: 0 20px; }
+  .nav-hamburger { display: flex; }
+  .nav-links {
+    position: fixed; top: 0; right: -100%; width: 280px;
+    height: 100vh; background: var(--white);
+    flex-direction: column; padding: 80px 28px 40px;
+    gap: 0; z-index: 999; box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    transition: right 0.35s var(--ease);
+  }
+  .nav-links.active { right: 0; }
+  .nav-links a { font-size: 16px; padding: 14px 0; border-bottom: 1px solid var(--g200); }
+  .nav-links a::after { display: none; }
+  .nav-cta { margin-top: 12px; text-align: center; display: block; }
+  .mobile-overlay { display: block; }
+
+  .hero { min-height: 85vh; }
+  .hero-content h1 { font-size: clamp(32px, 8vw, 52px); }
+  .hero-desc { display: none; }
+  .scroll-hint { display: none; }
+  .hero-arrow { width: 40px; height: 40px; font-size: 16px; }
+
+  .cred-strip { grid-template-columns: repeat(3, 1fr); }
+  .cred-item:nth-child(4), .cred-item:nth-child(5) { border-top: 1px solid var(--g200); }
+  .cred-val { font-size: 26px; }
+
+  .products-section, .custom-section, .story, .locator { padding: 64px 0; }
+
+  .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .cat-card .ph { height: 180px; }
+  .cat-card-info { padding: 14px; }
+  .cat-card-info h4 { font-size: 14px; }
+
+  .custom-grid { grid-template-columns: 1fr; gap: 32px; }
+  .finish-grid { gap: 8px; }
+  .finish-card .ph { height: 110px; }
+
+  .story-grid { grid-template-columns: 1fr; gap: 28px; }
+  .story-grid.reverse { direction: ltr; }
+  .story-img .ph { height: 280px; }
+  .story-text .btn-group { flex-direction: column; }
+  .story-text .btn-group .btn { text-align: center; }
+
+  .locator-grid { grid-template-columns: 1fr; gap: 28px; }
+  .search-group { flex-direction: column; }
+  .map-ph .ph { height: 260px; }
+  .loc-stats { flex-wrap: wrap; gap: 20px; }
+
+  .guarantee { padding: 56px 0; }
+
+  .footer { padding: 48px 0 28px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-brand img { height: 50px; }
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+
+  .wafab { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+  .wafab svg { width: 24px; height: 24px; }
+}
+
+@media (max-width: 480px) {
+  .cat-grid { grid-template-columns: 1fr; }
+  .cat-card .ph { height: 200px; }
+  .cred-strip { grid-template-columns: repeat(2, 1fr); }
+  .cred-item:nth-child(5) { grid-column: 1 / -1; }
+  .finish-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOADING SCREEN ═══ -->
+<div class="loader" id="loader">
+  <div class="loader-logo">CROWN</div>
+  <div class="loader-sub">Premium Furniture</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- ═══ PROGRESS BAR ═══ -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="crown-logo.png" alt="Crown Premium Furniture">
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="chairs-prototype.html">Chairs</a>
+      <a href="tables-prototype.html">Tables</a>
+      <a href="stools-prototype.html">Stools</a>
+      <a href="storage-prototype.html">Storage</a>
+      <a href="#about">About</a>
+      <a href="#dealer" class="nav-cta">Find a Dealer</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span></button>
+  </div>
+</nav>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- ═══ HERO CAROUSEL ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-track" id="heroTrack">
+
+    <!-- Slide 1 — Chairs -->
+    <div class="hero-slide active">
+      <div class="hero-bg">
+        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#f5f0eb 0%,#ede5da 40%,#e8dfd2 100%);"></div>
+      </div>
+      <div class="hero-content">
+        <h1>Your Design.<br>Our Surface.</h1>
+        <a href="chairs-prototype.html" class="btn btn-primary">Explore Chairs</a>
+      </div>
+      <div class="hero-desc"><span>Motion-blurred woman in white linen walking past Crown Audi Classic chairs in sharp focus. Studio setting, soft gray concrete, warm directional light. Film grain overlay.</span></div>
+    </div>
+
+    <!-- Slide 2 — Tables -->
+    <div class="hero-slide">
+      <div class="hero-bg">
+        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#f0ede8 0%,#e5dfd6 40%,#ddd5ca 100%);"></div>
+      </div>
+      <div class="hero-content">
+        <h1>Where Life<br>Happens.</h1>
+        <a href="tables-prototype.html" class="btn btn-primary">Explore Tables</a>
+      </div>
+      <div class="hero-desc"><span>Man placing a steel plate onto a Crown Royal dining table. Kitchen-dining, clean white walls, morning window light. Table crisp, person a warm blur. Film grain.</span></div>
+    </div>
+
+    <!-- Slide 3 — Stools -->
+    <div class="hero-slide">
+      <div class="hero-bg">
+        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#eceae6 0%,#e2ddd5 40%,#d8d2c8 100%);"></div>
+      </div>
+      <div class="hero-content">
+        <h1>Small Seat.<br>Big Impact.</h1>
+        <a href="stools-prototype.html" class="btn btn-primary">Explore Stools</a>
+      </div>
+      <div class="hero-desc"><span>Person lifting a Crown stool from a stack of 8. Chai-shop context. Stack crisp and centered, person a blur of action. Bright ambient light, film grain.</span></div>
+    </div>
+
+    <!-- Slide 4 — Storage -->
+    <div class="hero-slide">
+      <div class="hero-bg">
+        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#e8e8ec 0%,#dddde4 40%,#d2d2dc 100%);"></div>
+      </div>
+      <div class="hero-content">
+        <h1>Everything<br>Has a Place.</h1>
+        <a href="storage-prototype.html" class="btn btn-primary">Explore Storage</a>
+      </div>
+      <div class="hero-desc"><span>Person rolling a Crown 4-tier trolley through a bright modern kitchen. Trolley sharp and organized. Person a streak of purposeful movement. Film grain.</span></div>
+    </div>
+  </div>
+
+  <div class="hero-arrows">
+    <button class="hero-arrow" id="heroPrev">&#8592;</button>
+    <button class="hero-arrow" id="heroNext">&#8594;</button>
+  </div>
+  <div class="hero-dots" id="heroDots">
+    <button class="hero-dot active"></button>
+    <button class="hero-dot"></button>
+    <button class="hero-dot"></button>
+    <button class="hero-dot"></button>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-mouse"></div>
+    <span class="scroll-text">Scroll</span>
+  </div>
+</section>
+
+<!-- ═══ CREDIBILITY STRIP ═══ -->
+<div class="cred-strip" id="credStrip">
+  <div class="cred-item"><div class="cred-val" data-target="37">0</div><div class="cred-label">Years</div></div>
+  <div class="cred-item"><div class="cred-val" data-target="370">0</div><div class="cred-label">Dealer Partners</div></div>
+  <div class="cred-item"><div class="cred-val" data-target="6">0</div><div class="cred-label">States</div></div>
+  <div class="cred-item"><div class="cred-val" data-target="1500000" data-format="1.5M">0</div><div class="cred-label">Pieces / Year</div></div>
+  <div class="cred-item"><div class="cred-val" data-target="64">0</div><div class="cred-label">Models</div></div>
+</div>
+
+<!-- ═══ PRODUCTS OVERVIEW ═══ -->
+<section class="products-section" id="products">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="caption">64 Models</p>
+      <h2>Chairs. Tables. Stools. Storage.</h2>
+      <p>Designed to look premium. Priced to be accessible. Built to last.</p>
+    </div>
+    <div class="cat-grid">
+      <a href="chairs-prototype.html" class="cat-card reveal" data-delay="1">
+        <div class="ph" style="height:260px;background:linear-gradient(135deg,#f5f0eb,#e2d8cc);">
+          <span class="ph-label">Chairs — Audi Classic, Trump, Ferrari, Polo</span>
+        </div>
+        <div class="cat-card-info">
+          <h4>Chairs</h4>
+          <p>12+ models, 7+ colors each</p>
+          <span class="arrow">Explore &#8594;</span>
+        </div>
+      </a>
+      <a href="tables-prototype.html" class="cat-card reveal" data-delay="2">
+        <div class="ph" style="height:260px;background:linear-gradient(135deg,#f0ede8,#ddd5c8);">
+          <span class="ph-label">Tables — Dining, center, side, folding</span>
+        </div>
+        <div class="cat-card-info">
+          <h4>Tables</h4>
+          <p>Dining, center, side, folding</p>
+          <span class="arrow">Explore &#8594;</span>
+        </div>
+      </a>
+      <a href="stools-prototype.html" class="cat-card reveal" data-delay="3">
+        <div class="ph" style="height:260px;background:linear-gradient(135deg,#eceae6,#d8d2c8);">
+          <span class="ph-label">Stools — Stackable, step, bathroom</span>
+        </div>
+        <div class="cat-card-info">
+          <h4>Stools</h4>
+          <p>Stackable, step, bathroom</p>
+          <span class="arrow">Explore &#8594;</span>
+        </div>
+      </a>
+      <a href="storage-prototype.html" class="cat-card reveal" data-delay="4">
+        <div class="ph" style="height:260px;background:linear-gradient(135deg,#e8e8ec,#d0d0d8);">
+          <span class="ph-label">Storage — Trolleys, racks, organizers</span>
+        </div>
+        <div class="cat-card-info">
+          <h4>Storage</h4>
+          <p>Trolleys, racks, organizers</p>
+          <span class="arrow">Explore &#8594;</span>
+        </div>
+      </a>
+    </div>
+    <div style="text-align:center;margin-top:48px;" class="reveal" data-delay="5">
+      <a href="#" class="btn btn-secondary">View All Products</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CROWN CUSTOM ═══ -->
+<section class="custom-section" id="custom">
+  <div class="container">
+    <div class="custom-grid">
+      <div class="custom-content reveal-left">
+        <p class="caption">Crown Custom</p>
+        <h2>Plastic Furniture That Doesn't Look Like Plastic.</h2>
+        <p>Wood-grain, marble, stone, contemporary finishes. Put your brand on every chair. Custom colors, embossed logos, bespoke textures.</p>
+        <a href="#" class="btn btn-primary">See Full Finish Portfolio</a>
+      </div>
+      <div class="reveal-right">
+        <div class="finish-grid">
+          <div class="finish-card reveal" data-delay="1">
+            <div class="ph" style="height:140px;background:linear-gradient(135deg,#8B6914,#C4A35A);"></div>
+            <div class="finish-label">Wood-Grain</div>
+          </div>
+          <div class="finish-card reveal" data-delay="2">
+            <div class="ph" style="height:140px;background:linear-gradient(135deg,#d4d0cc,#f0ede8);"></div>
+            <div class="finish-label">Marble</div>
+          </div>
+          <div class="finish-card reveal" data-delay="3">
+            <div class="ph" style="height:140px;background:linear-gradient(135deg,#9e9689,#c8c0b4);"></div>
+            <div class="finish-label">Stone</div>
+          </div>
+          <div class="finish-card reveal" data-delay="4">
+            <div class="ph" style="height:140px;background:linear-gradient(135deg,#2a2a2a,#4a4a4a);"></div>
+            <div class="finish-label">Contemporary</div>
+          </div>
+          <div class="finish-card reveal" data-delay="5">
+            <div class="ph" style="height:140px;background:linear-gradient(135deg,#C41E3A,#e85d73);"></div>
+            <div class="finish-label">Custom Branded</div>
+          </div>
+          <div class="finish-card reveal" data-delay="5">
+            <div class="ph" style="height:140px;background:linear-gradient(135deg,#e8e0d4,#f5f0eb);">
+              <span class="ph-label">+12 more finishes</span>
+            </div>
+            <div class="finish-label">+ More</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GUARANTEE BANNER ═══ -->
+<section class="guarantee reveal-scale" id="about">
+  <div class="container">
+    <div class="gold-line"></div>
+    <h2>3-Year Guarantee. No Fine Print.</h2>
+    <p>Every Crown product. Every color. Every use case. If it breaks, we replace it. That's not marketing — that's a promise backed by 37 years.</p>
+    <a href="#" class="btn btn-primary">Learn About Our Guarantee</a>
+  </div>
+</section>
+
+<!-- ═══ FOR DEALERS ═══ -->
+<section class="story dark">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-text reveal-left">
+        <p class="caption">For Dealers</p>
+        <h2>Give Your Customers Something No Other Dealer Can.</h2>
+        <p>370 dealers trust Crown. Custom finishes, fast restocking, marketing support, and the only 3-year guarantee in the category. Your customers remember that.</p>
+        <div class="btn-group">
+          <a href="#dealer" class="btn btn-primary">Find Nearest Dealer</a>
+          <a href="#" class="btn btn-tertiary">Become a Dealer</a>
+        </div>
+      </div>
+      <div class="story-img reveal-right">
+        <div class="ph" style="height:460px;background:linear-gradient(135deg,#2a2a2e,#3a3a40,#2a2a2e);border:1px solid rgba(255,255,255,0.08);">
+          <span class="ph-label">Dealer showroom — Crown products on display. Professional setup, real Indian retail context.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSTITUTIONAL ═══ -->
+<section class="story">
+  <div class="container">
+    <div class="story-grid reverse">
+      <div class="story-text reveal-right">
+        <p class="caption" style="color:var(--red);">Bulk & Institutional</p>
+        <h2>Put Your Brand on Every Chair in Your Building.</h2>
+        <p>Schools, hotels, hospitals, restaurants, event venues. Custom branding, bulk pricing, dedicated account manager. One call, entire building furnished.</p>
+        <div class="btn-group">
+          <a href="#" class="btn btn-primary">Enquire About Institutional Orders</a>
+        </div>
+      </div>
+      <div class="story-img reveal-left">
+        <div class="ph" style="height:460px;background:linear-gradient(135deg,#f0ede8,#e5dfd6,#ddd5ca);">
+          <span class="ph-label">Institutional setting — Rows of Crown chairs in a hotel banquet hall. Custom branding on backrests.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEALER LOCATOR ═══ -->
+<section class="locator" id="dealer">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="caption">Find a Dealer</p>
+      <h2>370 Partners. 6 States.</h2>
+    </div>
+    <div class="locator-grid">
+      <div class="reveal-left">
+        <div class="search-group">
+          <input type="text" class="search-input" placeholder="Search by city or pin code">
+          <button class="btn btn-primary">Search</button>
+        </div>
+        <p style="font-size:14px;color:var(--g500);line-height:1.7;">Crown dealers are spread across West Bengal, Bihar, Jharkhand, Odisha, Assam, and Uttar Pradesh. Every dealer carries the full Crown range.</p>
+        <div class="loc-stats">
+          <div><div class="loc-stat-val">370</div><div class="loc-stat-label">Dealer Partners</div></div>
+          <div><div class="loc-stat-val">6</div><div class="loc-stat-label">States Covered</div></div>
+          <div><div class="loc-stat-val">64</div><div class="loc-stat-label">Models Available</div></div>
+        </div>
+      </div>
+      <div class="map-ph reveal-right">
+        <div class="ph" style="height:380px;background:linear-gradient(135deg,#e8e6e2,#f0ede8,#e5e0da);">
+          <span class="ph-label">Interactive dealer map — Eastern India with Crown red pins. Howrah factory highlighted.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="crown-logo.png" alt="Crown Premium Furniture">
+        <p class="tagline">Know Your Manufacturer.<br>Made in Howrah. Trusted in Six States.</p>
+        <div class="iso"><div class="iso-badge">ISO</div><span>Certified Manufacturer</span></div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="chairs-prototype.html">Chairs</a><a href="tables-prototype.html">Tables</a><a href="stools-prototype.html">Stools</a><a href="storage-prototype.html">Storage</a><a href="#">Crown Custom</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Crown</a><a href="#">Our Factory</a><a href="#">Dealer Network</a><a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Business</h4>
+        <a href="#">Find a Dealer</a><a href="#">Become a Dealer</a><a href="#">Institutional Orders</a><a href="#">Custom Branding</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Crown Furnitures. All rights reserved. Made in Howrah, West Bengal.</p>
+      <p class="tagline-tm">Your Design. Our Surface.&trade;</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ WHATSAPP FAB ═══ -->
+<a href="#" class="wafab" id="wafab" title="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT — All interactions & animations
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+// ─── LOADING SCREEN ──────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
+});
+
+// ─── SCROLL PROGRESS BAR ─────────────────────────────────────
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrolled / maxScroll * 100) + '%';
+}, { passive: true });
+
+// ─── NAV SCROLL EFFECT ──────────────────────────────────────
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ─── MOBILE MENU ─────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+const overlay = document.getElementById('mobileOverlay');
+function toggleMenu() {
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('active');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+}
+hamburger.addEventListener('click', toggleMenu);
+overlay.addEventListener('click', toggleMenu);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  if (navLinks.classList.contains('active')) toggleMenu();
+}));
+
+// ─── HERO CAROUSEL ───────────────────────────────────────────
+const heroTrack = document.getElementById('heroTrack');
+const heroDots = document.querySelectorAll('.hero-dot');
+const heroSlides = document.querySelectorAll('.hero-slide');
+let heroIdx = 0;
+const heroTotal = heroSlides.length;
+
+function heroUpdate() {
+  heroTrack.style.transform = `translateX(-${heroIdx * 100}%)`;
+  heroDots.forEach((d, i) => d.classList.toggle('active', i === heroIdx));
+  heroSlides.forEach((s, i) => s.classList.toggle('active', i === heroIdx));
+}
+function heroGo(dir) { heroIdx = (heroIdx + dir + heroTotal) % heroTotal; heroUpdate(); }
+function heroSet(i) { heroIdx = i; heroUpdate(); }
+
+document.getElementById('heroNext').addEventListener('click', () => heroGo(1));
+document.getElementById('heroPrev').addEventListener('click', () => heroGo(-1));
+heroDots.forEach((d, i) => d.addEventListener('click', () => heroSet(i)));
+
+let heroAuto = setInterval(() => heroGo(1), 6000);
+heroTrack.addEventListener('mouseenter', () => clearInterval(heroAuto));
+heroTrack.addEventListener('mouseleave', () => { heroAuto = setInterval(() => heroGo(1), 6000); });
+
+// Touch support
+let touchX = 0;
+heroTrack.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; clearInterval(heroAuto); }, { passive: true });
+heroTrack.addEventListener('touchend', e => {
+  const diff = touchX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) heroGo(diff > 0 ? 1 : -1);
+  heroAuto = setInterval(() => heroGo(1), 6000);
+}, { passive: true });
+
+// ─── SCROLL REVEAL ANIMATIONS ────────────────────────────────
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// ─── COUNTER ANIMATION ──────────────────────────────────────
+let counterDone = false;
+const credStrip = document.getElementById('credStrip');
+const counterObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !counterDone) {
+    counterDone = true;
+    document.querySelectorAll('.cred-val').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const format = el.dataset.format;
+      const duration = 1800;
+      const start = performance.now();
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        const current = Math.round(target * eased);
+        if (format) {
+          el.textContent = format;
+        } else {
+          el.textContent = current.toLocaleString();
+        }
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+}, { threshold: 0.5 });
+counterObserver.observe(credStrip);
+
+// ─── WHATSAPP FAB — show after scroll ────────────────────────
+const wafab = document.getElementById('wafab');
+window.addEventListener('scroll', () => {
+  wafab.classList.toggle('visible', window.scrollY > 400);
+}, { passive: true });
+
+// ─── SMOOTH ANCHOR SCROLLING ─────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const offset = 80;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

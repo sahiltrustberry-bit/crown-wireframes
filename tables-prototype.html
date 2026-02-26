@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crown — Tables | Every Meal Deserves This.</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CROWN CATEGORY PROTOTYPE — TABLES
+   ═══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --red: #C41E3A;
+  --red-dark: #A01830;
+  --red-glow: rgba(196,30,58,0.15);
+  --gold: #D4A843;
+  --gold-light: rgba(212,168,67,0.15);
+  --black: #1A1A1A;
+  --white: #FFFFFF;
+  --g100: #F7F7F7;
+  --g200: #EBEBEB;
+  --g300: #D4D4D4;
+  --g400: #9B9B9B;
+  --g500: #666;
+  --body: #333;
+  --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --max-w: 1200px;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --nav-h: 80px;
+  --hero-from: #f0ede8;
+  --hero-to: #ddd5ca;
+}
+
+html { scroll-behavior: smooth; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--g100); }
+::-webkit-scrollbar-thumb { background: var(--g300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+body {
+  font-family: var(--font);
+  color: var(--black);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
+
+/* ─── LOADING SCREEN ──────────────────────────────────────── */
+.loader {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 24px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-logo {
+  font-size: 32px; font-weight: 800; color: var(--white);
+  letter-spacing: 8px; text-transform: uppercase;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-sub {
+  font-size: 11px; font-weight: 500; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--red);
+}
+.loader-bar {
+  width: 120px; height: 2px; background: rgba(255,255,255,0.1);
+  border-radius: 1px; overflow: hidden; margin-top: 8px;
+}
+.loader-bar-fill {
+  height: 100%; width: 0; background: var(--red);
+  border-radius: 1px;
+  animation: loaderFill 1.8s var(--ease) forwards;
+}
+@keyframes loaderPulse { 0%,100%{ opacity:1; } 50%{ opacity:0.5; } }
+@keyframes loaderFill { 0%{ width:0; } 100%{ width:100%; } }
+
+/* ─── SCROLL ANIMATIONS ───────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left {
+  opacity: 0; transform: translateX(-40px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right {
+  opacity: 0; transform: translateX(40px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+.reveal-scale {
+  opacity: 0; transform: scale(0.95);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+[data-delay="1"] { transition-delay: 0.1s; }
+[data-delay="2"] { transition-delay: 0.2s; }
+[data-delay="3"] { transition-delay: 0.3s; }
+[data-delay="4"] { transition-delay: 0.4s; }
+[data-delay="5"] { transition-delay: 0.5s; }
+
+/* ─── PROGRESS BAR ────────────────────────────────────────── */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--red); z-index: 1001;
+  width: 0; transition: width 0.1s linear;
+}
+
+/* ─── NAVIGATION ──────────────────────────────────────────── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0);
+  backdrop-filter: blur(0px);
+  transition: all 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--g200);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+}
+.nav-inner {
+  max-width: var(--max-w); margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: var(--nav-h); transition: height 0.4s var(--ease);
+}
+.nav.scrolled .nav-inner { height: 64px; }
+
+.nav-logo { display: flex; align-items: center; }
+.nav-logo img { height: 65px; transition: height 0.4s var(--ease); }
+.nav.scrolled .nav-logo img { height: 48px; }
+
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--g500);
+  transition: color 0.3s ease; letter-spacing: 0.02em;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1.5px; background: var(--red);
+  transition: width 0.3s var(--ease);
+}
+.nav-links a:hover { color: var(--black); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--black); font-weight: 600; }
+.nav-links a.active::after { width: 100%; }
+
+.nav-cta {
+  padding: 10px 24px !important;
+  background: var(--red); color: var(--white) !important;
+  font-size: 11px !important; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: 3px; transition: all 0.3s ease;
+}
+.nav-cta::after { display: none !important; }
+.nav-cta:hover {
+  background: var(--red-dark) !important; color: var(--white) !important;
+  transform: translateY(-1px); box-shadow: 0 4px 16px rgba(196,30,58,0.3);
+}
+
+.nav-hamburger {
+  display: none; width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer; z-index: 1002;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--black); position: relative;
+  transition: all 0.3s ease;
+}
+.nav-hamburger span::before, .nav-hamburger span::after {
+  content: ''; position: absolute; width: 22px; height: 2px;
+  background: var(--black); left: 0; transition: all 0.3s ease;
+}
+.nav-hamburger span::before { top: -7px; }
+.nav-hamburger span::after { top: 7px; }
+.nav-hamburger.active span { background: transparent; }
+.nav-hamburger.active span::before { top: 0; transform: rotate(45deg); }
+.nav-hamburger.active span::after { top: 0; transform: rotate(-45deg); }
+
+.mobile-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); z-index: 998;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.mobile-overlay.active { opacity: 1; }
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 15px 38px; font-family: var(--font);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; border: none; border-radius: 3px;
+  cursor: pointer; transition: all 0.3s var(--ease);
+  position: relative; overflow: hidden;
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0.1); transform: translateX(-100%);
+  transition: transform 0.4s var(--ease);
+}
+.btn:hover::before { transform: translateX(0); }
+
+.btn-primary { background: var(--red); color: var(--white); }
+.btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(196,30,58,0.35); }
+
+.btn-secondary { background: var(--black); color: var(--white); }
+.btn-secondary:hover { background: #000; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+
+.btn-outline { background: transparent; color: var(--black); border: 1.5px solid var(--black); }
+.btn-outline:hover { background: var(--black); color: var(--white); }
+
+.btn-white-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
+.btn-white-outline:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+/* ─── CATEGORY HERO ───────────────────────────────────────── */
+.category-hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 100%);
+}
+
+.scattered-products {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+
+.scattered-item {
+  position: absolute;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--g400); text-align: center;
+  line-height: 1.4; padding: 8px;
+  border: 1.5px dashed var(--g300);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  opacity: 0;
+  animation: scatteredIn 0.8s var(--ease) forwards;
+}
+.scattered-item:nth-child(1) { animation-delay: 0.3s; }
+.scattered-item:nth-child(2) { animation-delay: 0.4s; }
+.scattered-item:nth-child(3) { animation-delay: 0.5s; }
+.scattered-item:nth-child(4) { animation-delay: 0.6s; }
+.scattered-item:nth-child(5) { animation-delay: 0.7s; }
+.scattered-item:nth-child(6) { animation-delay: 0.8s; }
+.scattered-item:nth-child(7) { animation-delay: 0.9s; }
+.scattered-item:nth-child(8) { animation-delay: 1.0s; }
+.scattered-item:nth-child(9) { animation-delay: 1.1s; }
+.scattered-item:nth-child(10) { animation-delay: 1.2s; }
+
+@keyframes scatteredIn {
+  from { opacity: 0; transform: inherit scale(0.8); }
+  to { opacity: 1; }
+}
+
+.category-hero-content {
+  position: relative; z-index: 2; text-align: center;
+  max-width: 650px; padding: 0 24px;
+}
+
+.heading-hero {
+  font-size: clamp(44px, 7vw, 80px);
+  font-weight: 800; line-height: 1.05;
+  letter-spacing: -0.02em; color: var(--black);
+  margin-bottom: 28px;
+}
+
+/* ─── FEATURE STRIP ───────────────────────────────────────── */
+.feature-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--g200); border-bottom: 1px solid var(--g200);
+}
+.feature-item {
+  padding: 36px 24px; text-align: center;
+  border-right: 1px solid var(--g200);
+  transition: background 0.3s ease;
+}
+.feature-item:last-child { border-right: none; }
+.feature-item:hover { background: var(--g100); }
+.feature-value {
+  font-size: 32px; font-weight: 800; color: var(--red);
+  margin-bottom: 6px; font-variant-numeric: tabular-nums;
+}
+.feature-label { font-size: 13px; font-weight: 500; color: var(--g500); }
+
+/* ─── EDITORIAL STORY ─────────────────────────────────────── */
+.story-section { padding: 100px 0; }
+.story-section.alt-bg { background: var(--g100); }
+
+.story-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.story-grid.reverse { direction: rtl; }
+.story-grid.reverse > * { direction: ltr; }
+
+.story-image .img-placeholder {
+  height: 480px; border-radius: 6px;
+  background: var(--g100); border: 1.5px dashed var(--g300);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--g400); text-align: center;
+  padding: 24px; line-height: 1.6;
+}
+
+.story-content .caption {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 14px;
+}
+.story-content h2 {
+  font-size: clamp(28px, 3.5vw, 40px); font-weight: 700;
+  line-height: 1.15; margin-bottom: 16px;
+}
+.story-content p {
+  font-size: 16px; color: var(--g500); line-height: 1.7;
+  margin-bottom: 28px; max-width: 460px;
+}
+
+/* ─── STICKY FILTER BAR ───────────────────────────────────── */
+.filter-bar {
+  position: sticky; top: 64px; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--g200);
+  padding: 0;
+}
+.filter-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0;
+}
+.filter-tabs {
+  display: flex; gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filter-tabs::-webkit-scrollbar { display: none; }
+
+.filter-tab {
+  padding: 8px 20px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--g500); background: transparent;
+  border: 1.5px solid var(--g200); border-radius: 100px;
+  cursor: pointer; transition: all 0.3s var(--ease);
+  white-space: nowrap; user-select: none;
+}
+.filter-tab:hover { border-color: var(--g400); color: var(--black); }
+.filter-tab.active {
+  background: var(--black); color: var(--white);
+  border-color: var(--black);
+}
+.filter-count {
+  font-size: 13px; color: var(--g400); white-space: nowrap;
+  margin-left: 20px;
+}
+
+/* ─── PRODUCT GRID ────────────────────────────────────────── */
+.products-section { padding: 60px 0 100px; }
+
+.product-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.product-card {
+  background: var(--white); border-radius: 8px;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), opacity 0.4s ease;
+  border: 1px solid var(--g200);
+}
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+}
+.product-card.hidden {
+  display: none;
+}
+.product-card.fade-in {
+  animation: cardFadeIn 0.5s var(--ease) forwards;
+}
+
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.product-card .img-placeholder {
+  height: 240px;
+  background: var(--g100); border-bottom: 1px solid var(--g200);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--g400); text-align: center;
+  padding: 16px; line-height: 1.5;
+}
+.product-card-info { padding: 20px; }
+.product-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.product-desc { font-size: 13px; color: var(--g500); margin-bottom: 12px; }
+.product-colors { display: flex; gap: 6px; }
+.color-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid var(--white);
+  box-shadow: 0 0 0 1px var(--g300);
+  transition: transform 0.2s ease;
+}
+.color-dot:hover { transform: scale(1.3); }
+
+/* ─── FEATURED PRODUCT SPOTLIGHT ──────────────────────────── */
+.spotlight { padding: 100px 0; background: var(--g100); }
+.spotlight-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.spotlight-image .img-placeholder {
+  height: 520px; border-radius: 8px;
+  background: var(--white); border: 1.5px dashed var(--g300);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--g400); text-align: center;
+  padding: 24px; line-height: 1.6;
+}
+.spotlight-content .caption {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 14px;
+}
+.spotlight-content h2 {
+  font-size: clamp(28px, 3.5vw, 42px); font-weight: 700;
+  line-height: 1.15; margin-bottom: 16px;
+}
+.spotlight-content p {
+  font-size: 16px; color: var(--g500); line-height: 1.7;
+  margin-bottom: 32px; max-width: 460px;
+}
+.specs-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; margin-bottom: 32px;
+}
+.spec-item {
+  padding: 16px; background: var(--white);
+  border-radius: 6px; border: 1px solid var(--g200);
+}
+.spec-value { font-size: 20px; font-weight: 800; color: var(--red); margin-bottom: 2px; }
+.spec-label { font-size: 12px; color: var(--g500); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ─── CROSS-SELL ──────────────────────────────────────────── */
+.cross-sell { padding: 100px 0; }
+.cross-sell .section-header {
+  text-align: center; margin-bottom: 48px;
+}
+.cross-sell .section-header h2 {
+  font-size: clamp(26px, 3.5vw, 38px); font-weight: 700; line-height: 1.15;
+}
+
+.cross-sell-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+.cross-sell-card {
+  position: relative; border-radius: 8px; overflow: hidden;
+  cursor: pointer; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.cross-sell-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.1); }
+.cross-sell-card .card-bg {
+  height: 300px; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--g400); text-align: center;
+  padding: 16px; border-radius: 8px;
+}
+.cross-sell-card .card-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px 24px;
+  background: linear-gradient(transparent, rgba(26,26,26,0.85));
+  color: var(--white);
+}
+.cross-sell-card .card-overlay h4 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.cross-sell-card .card-overlay p { font-size: 13px; color: rgba(255,255,255,0.7); }
+
+/* ─── CTA BANNER ──────────────────────────────────────────── */
+.cta-banner {
+  padding: 80px 0; background: var(--black); text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(196,30,58,0.08) 0%, transparent 70%);
+}
+.cta-banner h2 {
+  font-size: clamp(26px, 3.5vw, 40px); font-weight: 700;
+  color: var(--white); margin-bottom: 12px; position: relative;
+}
+.cta-banner p {
+  font-size: 16px; color: var(--g400); margin-bottom: 32px;
+  max-width: 500px; margin-left: auto; margin-right: auto; position: relative;
+}
+.cta-banner .btn-group {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative;
+}
+
+/* ─── FOOTER ──────────────────────────────────────────────── */
+.footer { background: var(--black); padding: 80px 0 40px; color: var(--white); }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+.footer-brand img { height: 65px; margin-bottom: 14px; }
+.footer-brand .tagline { font-size: 14px; color: var(--g500); line-height: 1.6; max-width: 260px; }
+.footer-brand .iso { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.footer-brand .iso-badge {
+  width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px; display: flex; align-items: center; justify-content: center;
+  font-size: 8px; color: var(--g400); letter-spacing: 0.05em; text-transform: uppercase;
+}
+.footer-brand .iso span { font-size: 12px; color: var(--g500); }
+
+.footer-col h4 {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--g400); margin-bottom: 18px;
+}
+.footer-col a { display: block; font-size: 14px; color: var(--g500); margin-bottom: 10px; transition: color 0.3s ease; }
+.footer-col a:hover { color: var(--white); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom p { font-size: 12px; color: var(--g500); }
+.footer-bottom .tagline-tm { color: var(--g400); font-style: italic; }
+
+/* ─── WHATSAPP FAB ────────────────────────────────────────── */
+.wafab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  cursor: pointer; transition: all 0.3s ease; border: none;
+  opacity: 0; transform: scale(0.8) translateY(20px);
+  transition: all 0.4s var(--ease);
+}
+.wafab.visible { opacity: 1; transform: scale(1) translateY(0); }
+.wafab:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+.wafab svg { width: 28px; height: 28px; fill: #fff; }
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .story-grid { gap: 48px; }
+  .spotlight-grid { gap: 48px; }
+  .cross-sell-grid { gap: 20px; }
+  .cross-sell-card .card-bg { height: 240px; }
+  .footer-top { grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  :root { --nav-h: 60px; }
+  .container { padding: 0 20px; }
+  .nav-inner { padding: 0 20px; }
+  .nav-hamburger { display: flex; }
+  .nav-links {
+    position: fixed; top: 0; right: -100%; width: 280px;
+    height: 100vh; background: var(--white);
+    flex-direction: column; padding: 80px 28px 40px;
+    gap: 0; z-index: 999; box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    transition: right 0.35s var(--ease);
+  }
+  .nav-links.active { right: 0; }
+  .nav-links a { font-size: 16px; padding: 14px 0; border-bottom: 1px solid var(--g200); }
+  .nav-links a::after { display: none; }
+  .nav-cta { margin-top: 12px; text-align: center; display: block; }
+  .mobile-overlay { display: block; }
+
+  .category-hero { min-height: 70vh; }
+  .scattered-products { opacity: 0.3; }
+  .scattered-item { transform: scale(0.7) !important; }
+
+  .feature-strip { grid-template-columns: repeat(2, 1fr); }
+  .feature-item:nth-child(1), .feature-item:nth-child(2) { border-bottom: 1px solid var(--g200); }
+
+  .story-section { padding: 64px 0; }
+  .story-grid { grid-template-columns: 1fr; gap: 28px; }
+  .story-grid.reverse { direction: ltr; }
+  .story-image .img-placeholder { height: 280px; }
+
+  .filter-bar { top: 60px; }
+  .filter-inner { padding: 12px 0; }
+
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .product-card .img-placeholder { height: 180px; }
+  .product-card-info { padding: 14px; }
+  .product-name { font-size: 14px; }
+
+  .spotlight { padding: 64px 0; }
+  .spotlight-grid { grid-template-columns: 1fr; gap: 32px; }
+  .spotlight-image .img-placeholder { height: 320px; }
+
+  .cross-sell { padding: 64px 0; }
+  .cross-sell-grid { grid-template-columns: 1fr; gap: 16px; }
+  .cross-sell-card .card-bg { height: 200px; }
+
+  .cta-banner { padding: 56px 0; }
+
+  .footer { padding: 48px 0 28px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-brand img { height: 50px; }
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+
+  .wafab { width: 50px; height: 50px; bottom: 20px; right: 20px; }
+  .wafab svg { width: 24px; height: 24px; }
+}
+
+@media (max-width: 480px) {
+  .scattered-products { display: none; }
+  .category-hero { min-height: 60vh; }
+  .product-grid { grid-template-columns: 1fr; }
+  .product-card .img-placeholder { height: 200px; }
+  .specs-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOADING SCREEN ═══ -->
+<div class="loader" id="loader">
+  <div class="loader-logo">CROWN</div>
+  <div class="loader-sub">Premium Furniture</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- ═══ PROGRESS BAR ═══ -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="prototype.html" class="nav-logo">
+      <img src="crown-logo.png" alt="Crown Premium Furniture">
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="chairs-prototype.html">Chairs</a>
+      <a href="tables-prototype.html" class="active">Tables</a>
+      <a href="stools-prototype.html">Stools</a>
+      <a href="storage-prototype.html">Storage</a>
+      <a href="#">About</a>
+      <a href="prototype.html#dealer" class="nav-cta">Find a Dealer</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span></button>
+  </div>
+</nav>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- ═══ CATEGORY HERO — Scattered tables ═══ -->
+<section class="category-hero">
+  <div class="scattered-products">
+    <div class="scattered-item" style="top:8%; left:3%; width:120px; height:80px; transform:rotate(-12deg);">Royal Dining — brown, top-down</div>
+    <div class="scattered-item" style="top:5%; left:25%; width:90px; height:65px; transform:rotate(8deg);">Edge — black, side view</div>
+    <div class="scattered-item" style="top:12%; right:8%; width:130px; height:90px; transform:rotate(5deg);">Classic Dining — beige, 3/4 angle</div>
+    <div class="scattered-item" style="top:3%; right:30%; width:80px; height:60px; transform:rotate(-18deg);">Fold — green, folded</div>
+    <div class="scattered-item" style="top:35%; left:2%; width:100px; height:75px; transform:rotate(10deg);">Centro — black, 3/4</div>
+    <div class="scattered-item" style="top:30%; right:3%; width:110px; height:80px; transform:rotate(-6deg);">Orbit — brown, top-down</div>
+    <div class="scattered-item" style="bottom:30%; left:5%; width:125px; height:85px; transform:rotate(-5deg);">Royal Dining — black, 3/4</div>
+    <div class="scattered-item" style="bottom:25%; right:5%; width:85px; height:65px; transform:rotate(15deg);">Edge — beige, top</div>
+    <div class="scattered-item" style="bottom:8%; left:20%; width:90px; height:60px; transform:rotate(8deg);">Fold — beige, open</div>
+    <div class="scattered-item" style="bottom:5%; right:22%; width:105px; height:75px; transform:rotate(-10deg);">Centro — brown, side</div>
+  </div>
+  <div class="category-hero-content">
+    <h1 class="heading-hero">Every Meal<br>Deserves This.</h1>
+    <a href="#products" class="btn btn-primary">Explore Tables</a>
+  </div>
+</section>
+
+<!-- ═══ FEATURE STRIP ═══ -->
+<div class="feature-strip" id="featureStrip">
+  <div class="feature-item">
+    <div class="feature-value" data-target="8" data-suffix="+">0</div>
+    <div class="feature-label">Table Models</div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-value" data-target="5" data-suffix="+">0</div>
+    <div class="feature-label">Colors Each</div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-value" data-target="0" data-suffix="">Scratch</div>
+    <div class="feature-label">Resistant Surface</div>
+  </div>
+  <div class="feature-item">
+    <div class="feature-value" data-target="3" data-suffix=" yr">0</div>
+    <div class="feature-label">Guarantee</div>
+  </div>
+</div>
+
+<!-- ═══ EDITORIAL STORY ═══ -->
+<section class="story-section">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-image reveal-left">
+        <div class="img-placeholder">
+          [ Editorial — Crown Royal Dining table, brown, top-down angle on white background. Extreme whitespace. 40% product, 60% white. Film grain. Surface texture visible. Contact shadow. ]
+        </div>
+      </div>
+      <div class="story-content reveal-right">
+        <p class="caption">The Crown Table</p>
+        <h2>Built for<br>Every Meal.</h2>
+        <p>Crown tables are built for Indian families — from daily rotis to Sunday biryanis, festival feasts to quiet evening chai. Scratch-resistant, easy to clean, and designed to bring everyone together.</p>
+        <a href="#products" class="btn btn-secondary">Browse All Tables</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STICKY FILTER BAR ═══ -->
+<div class="filter-bar" id="products">
+  <div class="container">
+    <div class="filter-inner">
+      <div class="filter-tabs" id="filterTabs">
+        <span class="filter-tab active" data-filter="all">All Tables</span>
+        <span class="filter-tab" data-filter="dining">Dining</span>
+        <span class="filter-tab" data-filter="center">Center</span>
+        <span class="filter-tab" data-filter="side">Side</span>
+        <span class="filter-tab" data-filter="folding">Folding</span>
+      </div>
+      <span class="filter-count" id="filterCount">8 products</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRODUCT GRID ═══ -->
+<section class="products-section">
+  <div class="container">
+    <div class="product-grid" id="productGrid">
+
+      <div class="product-card" data-category="dining">
+        <div class="img-placeholder">[ Royal Dining — 3/4 angle, white bg, soft shadow. 6-seater dining table. Sturdy legs, wide surface. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Royal Dining</div>
+          <div class="product-desc">6-seater dining table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#5C3D2E;"></span>
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="dining">
+        <div class="img-placeholder">[ Classic Dining — 3/4 angle, white bg. 4-seater dining table. Clean lines, compact form. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Classic Dining</div>
+          <div class="product-desc">4-seater dining table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#5C3D2E;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="center">
+        <div class="img-placeholder">[ Centro — 3/4 angle, white bg. Center table. Low profile, modern design. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Centro</div>
+          <div class="product-desc">Center table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+            <span class="color-dot" style="background:#5C3D2E;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="side">
+        <div class="img-placeholder">[ Edge — 3/4 angle, white bg. Side table. Slim, versatile, minimal. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Edge</div>
+          <div class="product-desc">Side table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="folding">
+        <div class="img-placeholder">[ Fold — 3/4 angle, white bg. Folding table. Compact when stored, sturdy when open. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Fold</div>
+          <div class="product-desc">Folding table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+            <span class="color-dot" style="background:#2D5A27;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="dining">
+        <div class="img-placeholder">[ Orbit — 3/4 angle, white bg. Round dining table. Elegant circular form. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Orbit</div>
+          <div class="product-desc">Round dining table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+            <span class="color-dot" style="background:#5C3D2E;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="dining">
+        <div class="img-placeholder">[ Compact Dining — 3/4 angle, white bg. 2-seater dining table. Space-saving design. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Compact Dining</div>
+          <div class="product-desc">2-seater dining table</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#5C3D2E;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="side">
+        <div class="img-placeholder">[ Nest — 3/4 angle, white bg. Nesting side tables. Set of 2-3, stackable. ]</div>
+        <div class="product-card-info">
+          <div class="product-name">Nest</div>
+          <div class="product-desc">Nesting side tables</div>
+          <div class="product-colors">
+            <span class="color-dot" style="background:#1A1A1A;"></span>
+            <span class="color-dot" style="background:#C8B89A;"></span>
+            <span class="color-dot" style="background:#5C3D2E;"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURED PRODUCT SPOTLIGHT ═══ -->
+<section class="spotlight">
+  <div class="container">
+    <div class="spotlight-grid">
+      <div class="spotlight-image reveal-left">
+        <div class="img-placeholder">
+          [ Hero shot — Crown Royal Dining table, brown. Full-page editorial. Dramatic lighting from above-right. Scratch-resistant surface catching highlights. Deep shadow underneath. Clean white background. 3/4 angle. Every leg and surface detail visible. ]
+        </div>
+      </div>
+      <div class="spotlight-content reveal-right">
+        <p class="caption">Featured Product</p>
+        <h2>Royal Dining.<br>Crown's Flagship Table.</h2>
+        <p>The Royal Dining is Crown's best-selling dining table — built to seat six comfortably, finished with a scratch-resistant surface, and designed to be the centerpiece of every Indian home.</p>
+        <div class="specs-grid">
+          <div class="spec-item">
+            <div class="spec-value">6 Seater</div>
+            <div class="spec-label">Capacity</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">5</div>
+            <div class="spec-label">Color Options</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">3 yr</div>
+            <div class="spec-label">Guarantee</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">Scratch</div>
+            <div class="spec-label">Resistant Surface</div>
+          </div>
+        </div>
+        <a href="#" class="btn btn-primary">View Full Details</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LIFESTYLE CONTEXT ═══ -->
+<section class="story-section alt-bg">
+  <div class="container">
+    <div class="story-grid reverse">
+      <div class="story-image reveal-right">
+        <div class="img-placeholder">
+          [ Lifestyle — Crown Royal Dining table in a warm Indian dining room. Family gathered for a meal. Rotis, dal, sabzi on the table. Warm overhead light. 4-6 people seated. Un-posed, natural moment. Clean, inviting. ]
+        </div>
+      </div>
+      <div class="story-content reveal-left">
+        <p class="caption">In Context</p>
+        <h2>Where Every Meal<br>Becomes a Memory.</h2>
+        <p>Crown tables find their place at the heart of every Indian home — morning breakfasts before school, festive dinners with the whole family, and quiet evening chai with the ones who matter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CROSS-SELL ═══ -->
+<section class="cross-sell">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Complete Your Space.</h2>
+    </div>
+    <div class="cross-sell-grid">
+      <a href="chairs-prototype.html" class="cross-sell-card reveal" data-delay="1">
+        <div class="card-bg" style="background:linear-gradient(135deg, #f5f0eb, #e8dfd2);">
+          [ Chairs — Crown Audi Classic chair, editorial shot ]
+        </div>
+        <div class="card-overlay">
+          <h4>Chairs</h4>
+          <p>12+ models — Armrest, stackable, premium</p>
+        </div>
+      </a>
+      <a href="stools-prototype.html" class="cross-sell-card reveal" data-delay="2">
+        <div class="card-bg" style="background:linear-gradient(135deg, #eceae6, #d8d2c8);">
+          [ Stools — Crown stools stacked, editorial shot ]
+        </div>
+        <div class="card-overlay">
+          <h4>Stools</h4>
+          <p>6+ models — Standard, step, bathroom</p>
+        </div>
+      </a>
+      <a href="storage-prototype.html" class="cross-sell-card reveal" data-delay="3">
+        <div class="card-bg" style="background:linear-gradient(135deg, #e8e8ec, #d2d2dc);">
+          [ Storage — Crown trolley, editorial shot ]
+        </div>
+        <div class="card-overlay">
+          <h4>Storage</h4>
+          <p>8+ models — Trolleys, racks, organizers</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA BANNER ═══ -->
+<section class="cta-banner reveal-scale">
+  <div class="container">
+    <h2>Find a Crown Dealer Near You.</h2>
+    <p>370 dealers across 6 states. Full product range. 3-year guarantee on everything.</p>
+    <div class="btn-group">
+      <a href="prototype.html#dealer" class="btn btn-primary">Find a Dealer</a>
+      <a href="#" class="btn btn-white-outline">Request Catalogue</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="crown-logo.png" alt="Crown Premium Furniture">
+        <p class="tagline">Know Your Manufacturer.<br>Made in Howrah. Trusted in Six States.</p>
+        <div class="iso"><div class="iso-badge">ISO</div><span>Certified Manufacturer</span></div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="chairs-prototype.html">Chairs</a><a href="tables-prototype.html">Tables</a><a href="stools-prototype.html">Stools</a><a href="storage-prototype.html">Storage</a><a href="#">Crown Custom</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Crown</a><a href="#">Our Factory</a><a href="#">Dealer Network</a><a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>For Business</h4>
+        <a href="prototype.html#dealer">Find a Dealer</a><a href="#">Become a Dealer</a><a href="#">Institutional Orders</a><a href="#">Custom Branding</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a><a href="#">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Crown Furnitures. All rights reserved. Made in Howrah, West Bengal.</p>
+      <p class="tagline-tm">Your Design. Our Surface.&trade;</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ WHATSAPP FAB ═══ -->
+<a href="https://wa.me/919876543210" class="wafab" id="wafab" title="Chat on WhatsApp" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+// ─── LOADING SCREEN ──────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2000);
+});
+
+// ─── SCROLL PROGRESS BAR ─────────────────────────────────────
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrolled / maxScroll * 100) + '%';
+}, { passive: true });
+
+// ─── NAV SCROLL EFFECT ──────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ─── MOBILE MENU ─────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+const overlay = document.getElementById('mobileOverlay');
+function toggleMenu() {
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('active');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+}
+hamburger.addEventListener('click', toggleMenu);
+overlay.addEventListener('click', toggleMenu);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  if (navLinks.classList.contains('active')) toggleMenu();
+}));
+
+// ─── FILTER TABS ─────────────────────────────────────────────
+const filterTabs = document.querySelectorAll('.filter-tab');
+const productCards = document.querySelectorAll('.product-card');
+const filterCount = document.getElementById('filterCount');
+
+filterTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    filterTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const filter = tab.dataset.filter;
+    let visibleCount = 0;
+
+    productCards.forEach((card, index) => {
+      const categories = card.dataset.category;
+      const show = filter === 'all' || categories.includes(filter);
+
+      card.classList.remove('fade-in');
+      if (show) {
+        card.classList.remove('hidden');
+        card.style.animationDelay = (visibleCount * 80) + 'ms';
+        // Force reflow to restart animation
+        void card.offsetWidth;
+        card.classList.add('fade-in');
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    filterCount.textContent = visibleCount + ' product' + (visibleCount !== 1 ? 's' : '');
+  });
+});
+
+// ─── SCROLL REVEAL ───────────────────────────────────────────
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// ─── COUNTER ANIMATION ──────────────────────────────────────
+let counterDone = false;
+const featureStrip = document.getElementById('featureStrip');
+const counterObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !counterDone) {
+    counterDone = true;
+    document.querySelectorAll('.feature-value').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const suffix = el.dataset.suffix || '';
+      // For "Scratch" feature (target=0), just display static text
+      if (target === 0) {
+        el.textContent = 'Scratch';
+        return;
+      }
+      const duration = 1500;
+      const start = performance.now();
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(target * eased);
+        el.textContent = current + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+}, { threshold: 0.5 });
+counterObserver.observe(featureStrip);
+
+// ─── WHATSAPP FAB ────────────────────────────────────────────
+const wafab = document.getElementById('wafab');
+window.addEventListener('scroll', () => {
+  wafab.classList.toggle('visible', window.scrollY > 400);
+}, { passive: true });
+
+// ─── SMOOTH ANCHOR SCROLLING ─────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const offset = 120;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

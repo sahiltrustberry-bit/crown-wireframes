@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crown — Your Design. Our Surface. | Homepage Wireframe</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ─── HERO CAROUSEL ──────────────────────────────────────── */
+    .hero-carousel {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .hero-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .hero-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Full-bleed background image */
+    .hero-slide-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-slide-bg .img-placeholder {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      /* hide the default centered text — we show it at bottom instead */
+      font-size: 0;
+      color: transparent;
+    }
+
+    /* Centered headline + CTA */
+    .hero-slide-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 600px;
+      padding: 0 24px;
+    }
+
+    .hero-slide-content .heading-hero {
+      color: var(--black);
+      margin-bottom: 28px;
+    }
+
+    /* Image description pinned to bottom */
+    .hero-slide-desc {
+      position: absolute;
+      bottom: 80px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      text-align: center;
+      padding: 0 40px;
+    }
+
+    .hero-slide-desc span {
+      display: inline-block;
+      max-width: 680px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--gray-400);
+      letter-spacing: 0.01em;
+    }
+
+    /* Carousel controls */
+    .hero-controls {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .hero-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gray-400);
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    .hero-dot.active {
+      background: var(--red);
+      border-color: var(--red);
+      transform: scale(1.2);
+    }
+
+    .hero-arrows {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .hero-arrow {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0,0,0,0.15);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: all;
+      font-size: 18px;
+      color: var(--black);
+      transition: all 0.3s ease;
+    }
+
+    .hero-arrow:hover {
+      background: var(--white);
+      border-color: var(--black);
+    }
+
+    /* ─── CROWN CUSTOM SECTION ─────────────────────────────────── */
+    .custom-section {
+      padding: 120px 0;
+      background: var(--white);
+    }
+
+    .custom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .finish-samples {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .finish-card {
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition);
+    }
+
+    .finish-card:hover { transform: translateY(-4px); }
+
+    .finish-card .img-placeholder {
+      height: 160px;
+      border-radius: 8px;
+    }
+
+    .finish-card .finish-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 12px 0 0;
+      color: var(--gray-500);
+    }
+
+    /* ─── PRODUCTS CATEGORY GRID ───────────────────────────────── */
+    .products-overview {
+      padding: 100px 0;
+      background: var(--gray-100);
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .category-card {
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition);
+    }
+
+    .category-card:hover { transform: translateY(-6px); }
+
+    .category-card .img-placeholder {
+      height: 260px;
+      border: none;
+      border-radius: 0;
+    }
+
+    .category-card-info {
+      padding: 20px;
+    }
+
+    .category-card-info h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .category-card-info p {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    /* ─── PATH SPLIT — AUDIENCE SECTIONS ───────────────────────── */
+    .path-section {
+      padding: 100px 0;
+    }
+
+    .path-section.dark-bg {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .path-section.dark-bg .heading-section { color: var(--white); }
+    .path-section.dark-bg .body-text { color: var(--gray-400); }
+    .path-section.dark-bg .caption { color: var(--red); }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .path-grid.reverse { direction: rtl; }
+    .path-grid.reverse > * { direction: ltr; }
+
+    .path-content { max-width: 480px; }
+    .path-content .heading-section { margin-bottom: 20px; }
+    .path-content .body-text { margin-bottom: 32px; }
+
+    .path-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── DEALER LOCATOR ───────────────────────────────────────── */
+    .dealer-locator {
+      padding: 100px 0;
+      background: var(--gray-100);
+    }
+
+    .locator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .locator-search {
+      max-width: 480px;
+    }
+
+    .search-input-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 16px 20px;
+      border: 2px solid var(--gray-200);
+      border-radius: 6px;
+      font-size: 15px;
+      color: var(--black);
+      background: var(--white);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .search-input::placeholder { color: var(--gray-400); }
+    .search-input:focus { border-color: var(--black); }
+
+    .locator-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .locator-stat .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .locator-stat .stat-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    .locator-map .img-placeholder {
+      height: 400px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ WIREFRAME LABEL ═══ -->
+  <div class="wf-label">WIREFRAME — HOMEPAGE</div>
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="homepage.html" class="nav-logo">
+        <img src="crown-logo.png" alt="Crown Premium Furniture">
+      </a>
+      <div class="nav-links">
+        <a href="chairs.html">Chairs</a>
+        <a href="tables.html">Tables</a>
+        <a href="stools.html">Stools</a>
+        <a href="storage.html">Storage</a>
+        <a href="#">About</a>
+        <a href="#dealer" class="nav-cta">Find a Dealer</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO — 4-SLIDE CATEGORY CAROUSEL ═══ -->
+  <section class="hero-carousel">
+    <div class="hero-track" id="heroTrack">
+
+      <!-- SLIDE 1 — CHAIRS -->
+      <div class="hero-slide">
+        <div class="hero-slide-bg">
+          <div class="img-placeholder motion-blur" style="background:linear-gradient(135deg, #f5f0eb 0%, #e8e0d4 100%);"></div>
+        </div>
+        <div class="hero-slide-content">
+          <h1 class="heading-hero">Your Design.<br>Our Surface.</h1>
+          <a href="chairs.html" class="btn btn-primary">Explore Chairs</a>
+        </div>
+        <div class="hero-slide-desc">
+          <span>[ Motion-blurred woman in a white linen shirt walking past a row of Crown Audi Classic chairs in sharp focus. Studio setting — soft gray concrete floor, white cyclorama wall. Warm directional light from upper-left catches the glossy chair surfaces. Person is a cinematic streak (1/15s shutter). Three chairs staggered at slight angles. Film grain overlay. Editorial, magazine quality. ]</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 — TABLES -->
+      <div class="hero-slide">
+        <div class="hero-slide-bg">
+          <div class="img-placeholder motion-blur" style="background:linear-gradient(135deg, #f0ede8 0%, #e0dbd4 100%);"></div>
+        </div>
+        <div class="hero-slide-content">
+          <h1 class="heading-hero">Where Life<br>Happens.</h1>
+          <a href="tables.html" class="btn btn-primary">Explore Tables</a>
+        </div>
+        <div class="hero-slide-desc">
+          <span>[ Motion-blurred man placing a steel plate onto a Crown Royal dining table in sharp focus. Kitchen-dining setting — clean white walls, morning window light. The table surface and legs are crisp, the person's arms and torso are a warm blur of movement. One Crown chair tucked in at the table edge. Film grain overlay. Lifestyle-editorial crossover. ]</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — STOOLS -->
+      <div class="hero-slide">
+        <div class="hero-slide-bg">
+          <div class="img-placeholder motion-blur" style="background:linear-gradient(135deg, #eceae6 0%, #ddd8d0 100%);"></div>
+        </div>
+        <div class="hero-slide-content">
+          <h1 class="heading-hero">Small Seat.<br>Big Impact.</h1>
+          <a href="stools.html" class="btn btn-primary">Explore Stools</a>
+        </div>
+        <div class="hero-slide-desc">
+          <span>[ Motion-blurred person lifting a Crown stool from a stack of 8 in sharp focus. Chai-shop / street-food context — clean but real. The stack is crisp and centered, the person pulling one off the top is a blur of action. Bright ambient light, slight film grain. Shows stackability and everyday Indian use. ]</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — STORAGE -->
+      <div class="hero-slide">
+        <div class="hero-slide-bg">
+          <div class="img-placeholder motion-blur" style="background:linear-gradient(135deg, #e8e8ec 0%, #d4d4dc 100%);"></div>
+        </div>
+        <div class="hero-slide-content">
+          <h1 class="heading-hero">Everything<br>Has a Place.</h1>
+          <a href="storage.html" class="btn btn-primary">Explore Storage</a>
+        </div>
+        <div class="hero-slide-desc">
+          <span>[ Motion-blurred person rolling a Crown 4-tier trolley through a bright modern kitchen. Trolley is sharp and in focus — neatly organized with jars, towels, utensils on each shelf. Person is a streak of purposeful movement. Clean white environment, natural light. Film grain overlay. ]</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Arrow controls -->
+    <div class="hero-arrows">
+      <button class="hero-arrow" onclick="heroSlide(-1)">←</button>
+      <button class="hero-arrow" onclick="heroSlide(1)">→</button>
+    </div>
+
+    <!-- Dot indicators -->
+    <div class="hero-controls">
+      <button class="hero-dot active" onclick="heroGo(0)"></button>
+      <button class="hero-dot" onclick="heroGo(1)"></button>
+      <button class="hero-dot" onclick="heroGo(2)"></button>
+      <button class="hero-dot" onclick="heroGo(3)"></button>
+    </div>
+  </section>
+
+  <!-- ═══ CREDIBILITY STRIP — No adjectives, only facts ═══ -->
+  <div class="feature-strip">
+    <div class="feature-item">
+      <div class="value">37</div>
+      <div class="label">Years</div>
+    </div>
+    <div class="feature-item">
+      <div class="value">370</div>
+      <div class="label">Dealer Partners</div>
+    </div>
+    <div class="feature-item">
+      <div class="value">6</div>
+      <div class="label">States</div>
+    </div>
+    <div class="feature-item">
+      <div class="value">1.5M</div>
+      <div class="label">Pieces / Year</div>
+    </div>
+    <div class="feature-item">
+      <div class="value">64</div>
+      <div class="label">Models</div>
+    </div>
+  </div>
+
+  <!-- ═══ PRODUCTS — 64 Models, 4 Categories ═══ -->
+  <section class="products-overview" id="products">
+    <div class="container">
+      <div class="section-header">
+        <p class="caption">64 Models</p>
+        <h2 class="heading-section">Chairs. Tables. Stools. Storage.</h2>
+      </div>
+      <div class="category-grid">
+        <a href="chairs.html" class="category-card">
+          <div class="img-placeholder" style="background:linear-gradient(135deg, #f5f0eb, #e8e0d4);">[ Chairs — Grid of Crown chairs. Audi Classic, Trump, Ferrari, Polo. White bg, editorial arrangement. Entry-level product photography. ]</div>
+          <div class="category-card-info">
+            <h4>Chairs</h4>
+            <p>12+ models, 7+ colors each</p>
+          </div>
+        </a>
+        <a href="tables.html" class="category-card">
+          <div class="img-placeholder" style="background:linear-gradient(135deg, #f0ede8, #e0dbd4);">[ Tables — Crown dining and center tables. Clean white bg, 3/4 angle. Entry-level product photography. ]</div>
+          <div class="category-card-info">
+            <h4>Tables</h4>
+            <p>Dining, center, side, folding</p>
+          </div>
+        </a>
+        <a href="stools.html" class="category-card">
+          <div class="img-placeholder" style="background:linear-gradient(135deg, #eceae6, #ddd8d0);">[ Stools — Crown stools stacked. Compact, stackable, multiple colors. Entry-level product photography. ]</div>
+          <div class="category-card-info">
+            <h4>Stools</h4>
+            <p>Stackable, step, bathroom</p>
+          </div>
+        </a>
+        <a href="storage.html" class="category-card">
+          <div class="img-placeholder" style="background:linear-gradient(135deg, #e8e8ec, #d4d4dc);">[ Storage — Crown trolleys and racks. Organized, functional. Entry-level product photography. ]</div>
+          <div class="category-card-info">
+            <h4>Storage</h4>
+            <p>Trolleys, racks, organizers</p>
+          </div>
+        </a>
+      </div>
+      <div style="text-align:center; margin-top:48px;">
+        <a href="#" class="btn btn-secondary">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CROWN CUSTOM — "Plastic furniture that doesn't look like plastic." ═══ -->
+  <section class="custom-section" id="custom">
+    <div class="container">
+      <div class="custom-grid">
+        <div>
+          <p class="caption" style="color:var(--red);">Crown Custom</p>
+          <h2 class="heading-section">Plastic Furniture That Doesn't<br>Look Like Plastic.</h2>
+          <a href="#" class="btn btn-primary" style="margin-top:32px;">See Full Finish Portfolio</a>
+        </div>
+        <div>
+          <div class="finish-samples">
+            <div class="finish-card">
+              <div class="img-placeholder" style="background:linear-gradient(135deg, #8B6914, #C4A35A);">[ Wood-grain finish sample — close-up of Crown chair surface showing realistic wood texture on plastic. Warm tones, visible grain pattern. ]</div>
+              <div class="finish-label">Wood-Grain</div>
+            </div>
+            <div class="finish-card">
+              <div class="img-placeholder" style="background:linear-gradient(135deg, #d4d0cc, #f5f2ee);">[ Marble finish sample — close-up of Crown table surface showing marble veining on plastic. Cool whites and grays. ]</div>
+              <div class="finish-label">Marble</div>
+            </div>
+            <div class="finish-card">
+              <div class="img-placeholder" style="background:linear-gradient(135deg, #9e9689, #c8c0b4);">[ Stone finish sample — close-up of Crown surface showing stone texture. Natural, earthy, matte. ]</div>
+              <div class="finish-label">Stone</div>
+            </div>
+            <div class="finish-card">
+              <div class="img-placeholder" style="background:linear-gradient(135deg, #2a2a2a, #4a4a4a);">[ Contemporary finish sample — close-up of Crown chair in matte black contemporary finish. Clean, modern, minimal. ]</div>
+              <div class="finish-label">Contemporary</div>
+            </div>
+            <div class="finish-card">
+              <div class="img-placeholder" style="background:linear-gradient(135deg, #C41E3A, #e85d73);">[ Custom branded finish sample — Crown chair with a hotel/restaurant logo embossed on the backrest. Shows branding capability. ]</div>
+              <div class="finish-label">Custom Branded</div>
+            </div>
+            <div class="finish-card">
+              <div class="img-placeholder" style="background:linear-gradient(135deg, #e8e0d4, #f5f0eb);">[ More finishes — collage or stack of multiple finish swatches. Shows the breadth of options. ]</div>
+              <div class="finish-label">+ More</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PATH A — CONSUMER (handled by product pages, no dedicated section needed) ═══ -->
+
+  <!-- ═══ PATH B — FOR DEALERS ═══ -->
+  <section class="path-section dark-bg">
+    <div class="container">
+      <div class="path-grid">
+        <div class="path-content">
+          <p class="caption">For Dealers</p>
+          <h2 class="heading-section">Give Your Customers Something<br>No Other Dealer Can.</h2>
+          <div class="path-ctas">
+            <a href="#dealer" class="btn btn-primary">Find Nearest Crown Dealer</a>
+            <a href="#" class="btn btn-tertiary">Become a Crown Dealer</a>
+          </div>
+        </div>
+        <div>
+          <div class="img-placeholder" style="height:440px; border-color:rgba(255,255,255,0.15);">[ Dealer showroom — A clean, well-lit Crown dealer storefront. Multiple Crown products on display. Professional setup. Shows the dealer experience and product range. Real Indian retail context. ]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PATH C — INSTITUTIONAL / BULK ORDERS ═══ -->
+  <section class="path-section">
+    <div class="container">
+      <div class="path-grid reverse">
+        <div class="path-content">
+          <p class="caption">Bulk &amp; Institutional</p>
+          <h2 class="heading-section">Put Your Brand on Every Chair<br>in Your Building.</h2>
+          <div class="path-ctas">
+            <a href="#" class="btn btn-primary">Enquire About Institutional Orders</a>
+          </div>
+        </div>
+        <div>
+          <div class="img-placeholder" style="height:440px;">[ Institutional setting — Rows of Crown chairs in a school auditorium or hotel banquet hall. Uniform, clean, professional. Shows scale and custom branding on backrests. Real institutional context. ]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DEALER LOCATOR ═══ -->
+  <section class="dealer-locator" id="dealer">
+    <div class="container">
+      <div class="section-header">
+        <p class="caption">Find a Dealer</p>
+        <h2 class="heading-section">370 Partners. 6 States.</h2>
+      </div>
+      <div class="locator-grid">
+        <div class="locator-search">
+          <div class="search-input-group">
+            <input type="text" class="search-input" placeholder="Search by city or pin code">
+            <button class="btn btn-primary">Search</button>
+          </div>
+          <div class="locator-stats">
+            <div class="locator-stat">
+              <div class="stat-value">370</div>
+              <div class="stat-label">Dealer partners</div>
+            </div>
+            <div class="locator-stat">
+              <div class="stat-value">6</div>
+              <div class="stat-label">States covered</div>
+            </div>
+            <div class="locator-stat">
+              <div class="stat-value">64</div>
+              <div class="stat-label">Models available</div>
+            </div>
+          </div>
+        </div>
+        <div class="locator-map">
+          <div class="img-placeholder" style="height:400px;">[ Interactive dealer map — Map of eastern/northern India (West Bengal, Bihar, Jharkhand, Odisha, Assam, UP) with pin markers showing Crown dealer locations. Clean map style, Crown red pins. Howrah factory location highlighted. ]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <img src="crown-logo.png" alt="Crown Premium Furniture">
+          <p class="tagline">Know Your Manufacturer.<br>Made in Howrah. Trusted in Six States.</p>
+          <div style="display:flex; align-items:center; gap:12px; margin-top:16px;">
+            <div style="width:40px; height:40px; border:1px solid rgba(255,255,255,0.2); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:9px; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.05em;">ISO</div>
+            <span style="font-size:12px; color:var(--gray-500);">Certified Manufacturer</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Products</h4>
+          <a href="chairs.html">Chairs</a>
+          <a href="tables.html">Tables</a>
+          <a href="stools.html">Stools</a>
+          <a href="storage.html">Storage</a>
+          <a href="#custom">Crown Custom</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About Crown</a>
+          <a href="#">Our Factory</a>
+          <a href="#">Dealer Network</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>For Business</h4>
+          <a href="#dealer">Find a Dealer</a>
+          <a href="#">Become a Dealer</a>
+          <a href="#">Institutional Orders</a>
+          <a href="#">Custom Branding</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">YouTube</a>
+          <a href="#">WhatsApp</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Crown Furnitures. All rights reserved. Made in Howrah, West Bengal.</p>
+        <p>Your Design. Our Surface.™</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ HERO CAROUSEL JS ═══ -->
+  <script>
+    let heroIndex = 0;
+    const heroTrack = document.getElementById('heroTrack');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    const heroTotal = 4;
+
+    function heroUpdate() {
+      heroTrack.style.transform = `translateX(-${heroIndex * 100}%)`;
+      heroDots.forEach((d, i) => d.classList.toggle('active', i === heroIndex));
+    }
+
+    function heroSlide(dir) {
+      heroIndex = (heroIndex + dir + heroTotal) % heroTotal;
+      heroUpdate();
+    }
+
+    function heroGo(i) {
+      heroIndex = i;
+      heroUpdate();
+    }
+
+    // Auto-advance every 6s
+    let heroAuto = setInterval(() => heroSlide(1), 6000);
+    heroTrack.addEventListener('mouseenter', () => clearInterval(heroAuto));
+    heroTrack.addEventListener('mouseleave', () => {
+      heroAuto = setInterval(() => heroSlide(1), 6000);
+    });
+  </script>
+
+
+  <!-- ═══ WHATSAPP FAB ═══ -->
+  <a href="https://wa.me/919876543210" target="_blank" class="whatsapp-fab" title="Chat with Crown on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</body>
+</html>
