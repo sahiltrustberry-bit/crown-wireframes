@@ -64,11 +64,8 @@ img { max-width: 100%; display: block; }
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-logo {
-  animation: loaderPulse 1.5s ease-in-out infinite;
-}
 .loader-logo img {
-  height: 80px;
+  height: 200px;
   filter: brightness(0) invert(1);
 }
 .loader-sub {
@@ -637,7 +634,6 @@ img { max-width: 100%; display: block; }
 <!-- ═══ LOADING SCREEN ═══ -->
 <div class="loader" id="loader">
   <div class="loader-logo"><img src="crown-logo.png" alt="Crown"></div>
-  <div class="loader-sub">Premium Furniture</div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
 
