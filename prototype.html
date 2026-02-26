@@ -64,9 +64,11 @@ img { max-width: 100%; display: block; }
 }
 .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .loader-logo {
-  font-size: 32px; font-weight: 800; color: var(--white);
-  letter-spacing: 8px; text-transform: uppercase;
   animation: loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-logo img {
+  height: 80px;
+  filter: brightness(0) invert(1);
 }
 .loader-sub {
   font-size: 11px; font-weight: 500; letter-spacing: 4px;
@@ -599,7 +601,7 @@ img { max-width: 100%; display: block; }
 
 <!-- ═══ LOADING SCREEN ═══ -->
 <div class="loader" id="loader">
-  <div class="loader-logo">CROWN</div>
+  <div class="loader-logo"><img src="crown-logo.png" alt="Crown"></div>
   <div class="loader-sub">Premium Furniture</div>
   <div class="loader-bar"><div class="loader-bar-fill"></div></div>
 </div>
