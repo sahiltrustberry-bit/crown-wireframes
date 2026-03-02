@@ -416,6 +416,117 @@ img { max-width: 100%; display: block; }
 .finish-card .ph { height: 140px; border-radius: 8px; }
 .finish-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; padding: 10px 0 0; color: var(--g500); }
 
+/* ─── PRODUCT SPOTLIGHT SECTIONS ─────────────────────────── */
+.spotlight { padding: 120px 0; position: relative; overflow: hidden; }
+.spotlight-dark { background: var(--black); color: var(--white); }
+.spotlight-dark h2 { color: var(--white); }
+.spotlight-dark p { color: var(--g400); }
+.spotlight-dark .caption { color: var(--red); }
+.spotlight-light { background: var(--g100); }
+.spotlight-white { background: var(--white); }
+
+.spotlight .caption {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--g400); margin-bottom: 14px;
+}
+.spotlight h2 {
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 700;
+  line-height: 1.15; margin-bottom: 16px;
+}
+.spotlight .spotlight-desc {
+  font-size: 16px; color: var(--g500); line-height: 1.7;
+  margin-bottom: 32px; max-width: 460px;
+}
+.spotlight .btn { margin-top: 8px; }
+
+/* Editorial split — hero left + text/variants right (or reversed) */
+.spotlight-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.spotlight-split.reversed { direction: rtl; }
+.spotlight-split.reversed > * { direction: ltr; }
+
+.spotlight-hero-img {
+  border-radius: 8px; overflow: hidden;
+  position: relative;
+}
+.spotlight-hero-img img {
+  width: 100%; height: 520px; object-fit: contain;
+}
+
+.spotlight-variants {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 32px;
+}
+.spotlight-variant {
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+}
+.spotlight-variant:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+.spotlight-variant img { width: 100%; height: 140px; object-fit: contain; padding: 8px; }
+.spotlight-variant .variant-name {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; text-align: center; padding: 8px 4px;
+  color: var(--g400);
+}
+.spotlight-light .spotlight-variant {
+  background: var(--white); border: 1px solid var(--g200);
+}
+
+/* Product stage — centered hero flanked by cards */
+.spotlight-stage { text-align: center; }
+.spotlight-stage .stage-hero {
+  max-width: 400px; margin: 0 auto 48px;
+}
+.spotlight-stage .stage-hero img {
+  width: 100%; height: 380px; object-fit: contain;
+}
+.spotlight-cards {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px; margin-top: 16px;
+}
+.spotlight-card {
+  background: var(--white); border-radius: 10px;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  border: 1px solid var(--g200);
+}
+.spotlight-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.spotlight-card img { width: 100%; height: 180px; object-fit: contain; padding: 12px; background: var(--g100); }
+.spotlight-card-info { padding: 16px; }
+.spotlight-card-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.spotlight-card-info p { font-size: 12px; color: var(--g500); }
+
+/* Lifestyle editorial — lifestyle image left + text/comparison right */
+.spotlight-lifestyle {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: 80px; align-items: center;
+}
+.spotlight-lifestyle-img {
+  border-radius: 8px; overflow: hidden;
+}
+.spotlight-lifestyle-img img {
+  width: 100%; height: 520px; object-fit: cover; border-radius: 8px;
+}
+.spotlight-compare {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-top: 32px;
+}
+.spotlight-compare-item {
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--g200); background: var(--g100);
+  transition: transform 0.3s var(--ease);
+}
+.spotlight-compare-item:hover { transform: translateY(-4px); }
+.spotlight-compare-item img { width: 100%; height: 160px; object-fit: cover; }
+.spotlight-compare-item .compare-name {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; text-align: center; padding: 10px;
+  color: var(--g500);
+}
+
 /* ─── STORY / PATH SECTIONS ───────────────────────────────── */
 .story { padding: 100px 0; }
 .story.dark { background: var(--black); color: var(--white); }
@@ -558,7 +669,22 @@ img { max-width: 100%; display: block; }
   .cred-item:nth-child(4), .cred-item:nth-child(5) { border-top: 1px solid var(--g200); }
   .cred-val { font-size: 26px; }
 
-  .products-section, .custom-section, .story, .locator { padding: 64px 0; }
+  .products-section, .custom-section, .story, .locator, .spotlight { padding: 64px 0; }
+
+  .spotlight-split { grid-template-columns: 1fr; gap: 32px; }
+  .spotlight-split.reversed { direction: ltr; }
+  .spotlight-hero-img img { height: 360px; }
+  .spotlight-variants { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .spotlight-variant img { height: 100px; }
+
+  .spotlight-stage .stage-hero img { height: 280px; }
+  .spotlight-cards { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .spotlight-card img { height: 140px; }
+
+  .spotlight-lifestyle { grid-template-columns: 1fr; gap: 32px; }
+  .spotlight-lifestyle-img img { height: 360px; }
+  .spotlight-compare { gap: 12px; }
+  .spotlight-compare-item img { height: 120px; }
 
   .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .cat-card .ph { height: 180px; }
@@ -597,6 +723,15 @@ img { max-width: 100%; display: block; }
   .cred-strip { grid-template-columns: repeat(2, 1fr); }
   .cred-item:nth-child(5) { grid-column: 1 / -1; }
   .finish-grid { grid-template-columns: repeat(2, 1fr); }
+  .spotlight-hero-img img { height: 280px; }
+  .spotlight-variants { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .spotlight-variant img { height: 80px; }
+  .spotlight-stage .stage-hero img { height: 220px; }
+  .spotlight-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .spotlight-card img { height: 120px; }
+  .spotlight-card-info { padding: 12px; }
+  .spotlight-lifestyle-img img { height: 280px; }
+  .spotlight-compare-item img { height: 100px; }
   .footer-top { grid-template-columns: 1fr; }
 }
 </style>
@@ -765,43 +900,30 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-<!-- ═══ CROWN CUSTOM ═══ -->
-<section class="custom-section" id="custom">
+<!-- ═══ SPOTLIGHT 1: CHAIRS — AUDI SERIES ═══ -->
+<section class="spotlight spotlight-dark">
   <div class="container">
-    <div class="custom-grid">
-      <div class="custom-content reveal-left">
-        <p class="caption">Crown Custom</p>
-        <h2>Plastic Furniture That Doesn't Look Like Plastic.</h2>
-        <p>Wood-grain, marble, stone, contemporary finishes. Put your brand on every chair. Custom colors, embossed logos, bespoke textures.</p>
-        <a href="#" class="btn btn-primary">See Full Finish Portfolio</a>
+    <div class="spotlight-split">
+      <div class="spotlight-hero-img reveal-left">
+        <img src="images/products/Audi Royal Hero.png" alt="Crown Audi Royal Chair">
       </div>
       <div class="reveal-right">
-        <div class="finish-grid">
-          <div class="finish-card reveal" data-delay="1">
-            <div class="ph" style="height:140px;background:linear-gradient(135deg,#8B6914,#C4A35A);"></div>
-            <div class="finish-label">Wood-Grain</div>
+        <p class="caption">Best-Selling Chairs</p>
+        <h2>The Audi Series. Designed to Be Noticed.</h2>
+        <p class="spotlight-desc">Four distinct personalities — one unmistakable standard. From the boardroom to the banquet hall, Audi is the chair people remember.</p>
+        <a href="chairs-prototype.html" class="btn btn-primary">Explore All Chairs</a>
+        <div class="spotlight-variants">
+          <div class="spotlight-variant reveal" data-delay="1">
+            <img src="images/products/Audi Classic Hero.png" alt="Audi Classic">
+            <div class="variant-name">Classic</div>
           </div>
-          <div class="finish-card reveal" data-delay="2">
-            <div class="ph" style="height:140px;background:linear-gradient(135deg,#d4d0cc,#f0ede8);"></div>
-            <div class="finish-label">Marble</div>
+          <div class="spotlight-variant reveal" data-delay="2">
+            <img src="images/products/Audi Vintage Hero.png" alt="Audi Vintage">
+            <div class="variant-name">Vintage</div>
           </div>
-          <div class="finish-card reveal" data-delay="3">
-            <div class="ph" style="height:140px;background:linear-gradient(135deg,#9e9689,#c8c0b4);"></div>
-            <div class="finish-label">Stone</div>
-          </div>
-          <div class="finish-card reveal" data-delay="4">
-            <div class="ph" style="height:140px;background:linear-gradient(135deg,#2a2a2a,#4a4a4a);"></div>
-            <div class="finish-label">Contemporary</div>
-          </div>
-          <div class="finish-card reveal" data-delay="5">
-            <div class="ph" style="height:140px;background:linear-gradient(135deg,#C41E3A,#e85d73);"></div>
-            <div class="finish-label">Custom Branded</div>
-          </div>
-          <div class="finish-card reveal" data-delay="5">
-            <div class="ph" style="height:140px;background:linear-gradient(135deg,#e8e0d4,#f5f0eb);">
-              <span class="ph-label">+12 more finishes</span>
-            </div>
-            <div class="finish-label">+ More</div>
+          <div class="spotlight-variant reveal" data-delay="3">
+            <img src="images/products/Audi Duo.png" alt="Audi Duo">
+            <div class="variant-name">Duo</div>
           </div>
         </div>
       </div>
@@ -809,13 +931,110 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-<!-- ═══ GUARANTEE BANNER ═══ -->
-<section class="guarantee reveal-scale" id="about">
+<!-- ═══ SPOTLIGHT 2: STOOLS — LEGO + JAGUAR ═══ -->
+<section class="spotlight spotlight-light">
   <div class="container">
-    <div class="gold-line"></div>
-    <h2>3-Year Guarantee. No Fine Print.</h2>
-    <p>Every Crown product. Every color. Every use case. If it breaks, we replace it. That's not marketing — that's a promise backed by 37 years.</p>
-    <a href="#" class="btn btn-primary">Learn About Our Guarantee</a>
+    <div class="spotlight-stage">
+      <div class="reveal">
+        <p class="caption">Best-Selling Stools</p>
+        <h2>Stack. Sit. Stand Out.</h2>
+        <p class="spotlight-desc" style="margin-left:auto;margin-right:auto;">From café counters to kitchen islands — Lego and Jaguar stools bring color, comfort, and a shape that stacks beautifully.</p>
+      </div>
+      <div class="stage-hero reveal-scale">
+        <img src="images/products/Lego 18'' Orange.png" alt="Crown Lego 18 inch Orange Stool">
+      </div>
+      <div class="spotlight-cards">
+        <div class="spotlight-card reveal" data-delay="1">
+          <img src="images/products/Lego 12''.png" alt="Lego 12 inch">
+          <div class="spotlight-card-info">
+            <h4>Lego 12"</h4>
+            <p>Compact counter stool</p>
+          </div>
+        </div>
+        <div class="spotlight-card reveal" data-delay="2">
+          <img src="images/products/Lego 18''.png" alt="Lego 18 inch">
+          <div class="spotlight-card-info">
+            <h4>Lego 18"</h4>
+            <p>Bar-height stool</p>
+          </div>
+        </div>
+        <div class="spotlight-card reveal" data-delay="3">
+          <img src="images/products/Jaguar Royal Blue.png" alt="Jaguar Royal Blue">
+          <div class="spotlight-card-info">
+            <h4>Jaguar Blue</h4>
+            <p>Bold, curved comfort</p>
+          </div>
+        </div>
+        <div class="spotlight-card reveal" data-delay="4">
+          <img src="images/products/Jaguar Royal Red.png" alt="Jaguar Royal Red">
+          <div class="spotlight-card-info">
+            <h4>Jaguar Red</h4>
+            <p>Statement red finish</p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:40px;" class="reveal" data-delay="5">
+        <a href="stools-prototype.html" class="btn btn-secondary">Explore All Stools</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPOTLIGHT 3: TABLES — CROMA, ACE, PRESTIGE, VOLVO ═══ -->
+<section class="spotlight spotlight-dark">
+  <div class="container">
+    <div class="spotlight-split">
+      <div class="reveal-left">
+        <p class="caption">Best-Selling Tables</p>
+        <h2>Every Surface Tells a Story.</h2>
+        <p class="spotlight-desc">Wood-grain precision. Stone-finish sophistication. Crown tables set the tone for every space — from dining halls to outdoor terraces.</p>
+        <a href="tables-prototype.html" class="btn btn-primary">Explore All Tables</a>
+        <div class="spotlight-variants">
+          <div class="spotlight-variant reveal" data-delay="1">
+            <img src="images/products/Croma Brown.png" alt="Croma Brown">
+            <div class="variant-name">Croma</div>
+          </div>
+          <div class="spotlight-variant reveal" data-delay="2">
+            <img src="images/products/Ace Royal Beige.png" alt="Ace Royal Beige">
+            <div class="variant-name">Ace Royal</div>
+          </div>
+          <div class="spotlight-variant reveal" data-delay="3">
+            <img src="images/products/Prestige Royal Red.png" alt="Prestige Royal Red">
+            <div class="variant-name">Prestige</div>
+          </div>
+        </div>
+      </div>
+      <div class="spotlight-hero-img reveal-right">
+        <img src="images/products/Volvo.png" alt="Crown Volvo Table">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPOTLIGHT 4: STORAGE — LEO SERIES ═══ -->
+<section class="spotlight spotlight-white">
+  <div class="container">
+    <div class="spotlight-lifestyle">
+      <div class="spotlight-lifestyle-img reveal-left">
+        <img src="images/products/LEO MEDIUM 3.jpg" alt="Crown Leo Medium 4ft Storage Cabinet">
+      </div>
+      <div class="reveal-right">
+        <p class="caption" style="color:var(--red);">Best-Selling Storage</p>
+        <h2>The Leo Series. Order Without Compromise.</h2>
+        <p class="spotlight-desc">Clean lines, clever compartments, real wood-grain finish. Leo cabinets organize your space without cluttering your style.</p>
+        <a href="storage-prototype.html" class="btn btn-primary">Explore All Storage</a>
+        <div class="spotlight-compare">
+          <div class="spotlight-compare-item reveal" data-delay="1">
+            <img src="images/products/LEO MEDIUM 3.jpg" alt="Leo Medium 4ft">
+            <div class="compare-name">Leo Medium · 4ft</div>
+          </div>
+          <div class="spotlight-compare-item reveal" data-delay="2">
+            <img src="images/products/leo small one.jpg" alt="Leo Small 2ft">
+            <div class="compare-name">Leo Small · 2ft</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
