@@ -120,28 +120,22 @@ img { max-width: 100%; display: block; }
 
 /* ─── NAVIGATION ──────────────────────────────────────────── */
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  background: rgba(255,255,255,0);
-  backdrop-filter: blur(0px);
-  transition: all 0.4s var(--ease);
-  border-bottom: 1px solid transparent;
+  position: sticky; top: 0; left: 0; right: 0; z-index: 1000;
+  background: var(--white);
+  border-bottom: 1px solid var(--g200);
+  transition: box-shadow 0.4s var(--ease);
 }
 .nav.scrolled {
-  background: rgba(255,255,255,0.97);
-  backdrop-filter: blur(20px);
-  border-bottom-color: var(--g200);
-  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.06);
 }
 .nav-inner {
-  max-width: var(--max-w); margin: 0 auto; padding: 0 40px;
+  max-width: 100%; margin: 0; padding: 0 40px 0 24px;
   display: flex; align-items: center; justify-content: space-between;
-  height: var(--nav-h); transition: height 0.4s var(--ease);
+  height: 64px;
 }
-.nav.scrolled .nav-inner { height: 64px; }
 
 .nav-logo { display: flex; align-items: center; }
-.nav-logo img { height: 65px; transition: height 0.4s var(--ease); }
-.nav.scrolled .nav-logo img { height: 48px; }
+.nav-logo img { height: 80px; }
 
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-links a {
@@ -229,55 +223,49 @@ img { max-width: 100%; display: block; }
 
 /* ─── CATEGORY HERO ───────────────────────────────────────── */
 .category-hero {
-  min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
+  min-height: calc(100vh - 64px);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
   position: relative; overflow: hidden;
-  background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 100%);
 }
 
-.scattered-products {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+.hero-panel {
+  position: relative; overflow: hidden;
+  background: var(--g100);
 }
-
-.scattered-item {
-  position: absolute;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; color: var(--g400); text-align: center;
-  line-height: 1.4; padding: 8px;
-  border: 1.5px dashed var(--g300);
-  border-radius: 6px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+.hero-panel img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
   opacity: 0;
-  animation: scatteredIn 0.8s var(--ease) forwards;
+  animation: heroFadeIn 1s var(--ease) forwards;
 }
-.scattered-item:nth-child(1) { animation-delay: 0.3s; }
-.scattered-item:nth-child(2) { animation-delay: 0.4s; }
-.scattered-item:nth-child(3) { animation-delay: 0.5s; }
-.scattered-item:nth-child(4) { animation-delay: 0.6s; }
-.scattered-item:nth-child(5) { animation-delay: 0.7s; }
-.scattered-item:nth-child(6) { animation-delay: 0.8s; }
-.scattered-item:nth-child(7) { animation-delay: 0.9s; }
-.scattered-item:nth-child(8) { animation-delay: 1.0s; }
-.scattered-item:nth-child(9) { animation-delay: 1.1s; }
-.scattered-item:nth-child(10) { animation-delay: 1.2s; }
+.hero-panel:nth-child(2) img {
+  animation-delay: 0.2s;
+}
+.hero-panel-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--g400); letter-spacing: 0.02em;
+}
 
-@keyframes scatteredIn {
-  from { opacity: 0; transform: inherit scale(0.8); }
+@keyframes heroFadeIn {
+  from { opacity: 0; }
   to { opacity: 1; }
 }
 
 .category-hero-content {
-  position: relative; z-index: 2; text-align: center;
-  max-width: 650px; padding: 0 24px;
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 2; text-align: center;
+  padding: 48px 24px 36px;
+  background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
 }
 
 .heading-hero {
-  font-size: clamp(44px, 7vw, 80px);
-  font-weight: 800; line-height: 1.05;
-  letter-spacing: -0.02em; color: var(--black);
-  margin-bottom: 28px;
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700; line-height: 1.15;
+  letter-spacing: -0.01em; color: var(--white);
+  margin-bottom: 16px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
 }
 
 /* ─── FEATURE STRIP ───────────────────────────────────────── */
@@ -579,9 +567,9 @@ img { max-width: 100%; display: block; }
   .nav-cta { margin-top: 12px; text-align: center; display: block; }
   .mobile-overlay { display: block; }
 
-  .category-hero { min-height: 70vh; }
-  .scattered-products { opacity: 0.3; }
-  .scattered-item { transform: scale(0.7) !important; }
+  .category-hero { min-height: 70vh; grid-template-columns: 1fr 1fr; }
+  .category-hero-content { padding: 60px 20px 36px; }
+  .heading-hero { font-size: clamp(24px, 5vw, 36px); }
 
   .feature-strip { grid-template-columns: repeat(2, 1fr); }
   .feature-item:nth-child(1), .feature-item:nth-child(2) { border-bottom: 1px solid var(--g200); }
@@ -619,8 +607,9 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 480px) {
-  .scattered-products { display: none; }
-  .category-hero { min-height: 60vh; }
+  .category-hero { min-height: auto; grid-template-columns: 1fr; }
+  .hero-panel { min-height: 45vh; }
+  .hero-panel:nth-child(2) { display: none; }
   .product-grid { grid-template-columns: 1fr; }
   .product-card .img-placeholder { height: 200px; }
   .specs-grid { grid-template-columns: 1fr; }
@@ -658,23 +647,17 @@ img { max-width: 100%; display: block; }
 </nav>
 <div class="mobile-overlay" id="mobileOverlay"></div>
 
-<!-- ═══ CATEGORY HERO — Scattered tables ═══ -->
+<!-- ═══ CATEGORY HERO — Split banner ═══ -->
 <section class="category-hero">
-  <div class="scattered-products">
-    <div class="scattered-item" style="top:8%; left:3%; width:120px; height:80px; transform:rotate(-12deg);">Royal Dining — brown, top-down</div>
-    <div class="scattered-item" style="top:5%; left:25%; width:90px; height:65px; transform:rotate(8deg);">Edge — black, side view</div>
-    <div class="scattered-item" style="top:12%; right:8%; width:130px; height:90px; transform:rotate(5deg);">Classic Dining — beige, 3/4 angle</div>
-    <div class="scattered-item" style="top:3%; right:30%; width:80px; height:60px; transform:rotate(-18deg);">Fold — green, folded</div>
-    <div class="scattered-item" style="top:35%; left:2%; width:100px; height:75px; transform:rotate(10deg);">Centro — black, 3/4</div>
-    <div class="scattered-item" style="top:30%; right:3%; width:110px; height:80px; transform:rotate(-6deg);">Orbit — brown, top-down</div>
-    <div class="scattered-item" style="bottom:30%; left:5%; width:125px; height:85px; transform:rotate(-5deg);">Royal Dining — black, 3/4</div>
-    <div class="scattered-item" style="bottom:25%; right:5%; width:85px; height:65px; transform:rotate(15deg);">Edge — beige, top</div>
-    <div class="scattered-item" style="bottom:8%; left:20%; width:90px; height:60px; transform:rotate(8deg);">Fold — beige, open</div>
-    <div class="scattered-item" style="bottom:5%; right:22%; width:105px; height:75px; transform:rotate(-10deg);">Centro — brown, side</div>
+  <div class="hero-panel">
+    <img src="images/products/tables-hero-left.png" alt="Prestige Royal Red — motion blur lifestyle">
+  </div>
+  <div class="hero-panel">
+    <img src="images/products/tables-hero-right.png" alt="Prestige Royal Red — product shot">
   </div>
   <div class="category-hero-content">
-    <h1 class="heading-hero">Every Meal<br>Deserves This.</h1>
-    <a href="#products" class="btn btn-primary">Explore Tables</a>
+    <h1 class="heading-hero">Every Meal Deserves This.</h1>
+    <a href="#products" class="btn btn-white-outline">Explore Tables</a>
   </div>
 </section>
 
