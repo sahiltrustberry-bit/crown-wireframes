@@ -133,12 +133,12 @@ img { max-width: 100%; display: block; }
 .nav.scrolled .nav-inner { height: 64px; }
 
 .nav-logo { display: flex; align-items: center; }
-.nav-logo img { height: 65px; transition: height 0.4s var(--ease); }
-.nav.scrolled .nav-logo img { height: 48px; }
+.nav-logo img { height: 85px; margin: -6px 0; transition: height 0.4s var(--ease); }
+.nav.scrolled .nav-logo img { height: 56px; margin: -4px 0; }
 
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-links a {
-  font-size: 13px; font-weight: 500; color: var(--g500);
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85);
   transition: color 0.3s ease; letter-spacing: 0.02em;
   position: relative;
 }
@@ -147,8 +147,10 @@ img { max-width: 100%; display: block; }
   width: 0; height: 1.5px; background: var(--red);
   transition: width 0.3s var(--ease);
 }
-.nav-links a:hover { color: var(--black); }
+.nav-links a:hover { color: var(--white); }
 .nav-links a:hover::after { width: 100%; }
+.nav.scrolled .nav-links a { color: var(--g500); }
+.nav.scrolled .nav-links a:hover { color: var(--black); }
 
 .nav-cta {
   padding: 10px 24px !important;
@@ -254,6 +256,11 @@ img { max-width: 100%; display: block; }
   position: absolute; inset: 0; z-index: 0;
   transition: transform 6s linear;
 }
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.4) 100%);
+  z-index: 1;
+}
 .hero-slide.active .hero-bg { transform: scale(1.03); }
 
 .hero-content {
@@ -263,7 +270,8 @@ img { max-width: 100%; display: block; }
 .hero-content h1 {
   font-size: clamp(42px, 6vw, 72px); font-weight: 800;
   line-height: 1.05; letter-spacing: -0.02em;
-  color: var(--black); margin-bottom: 28px;
+  color: var(--white); margin-bottom: 28px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
   opacity: 0; transform: translateY(20px);
   transition: opacity 0.6s 0.2s var(--ease), transform 0.6s 0.2s var(--ease);
 }
@@ -282,7 +290,7 @@ img { max-width: 100%; display: block; }
 }
 .hero-desc span {
   display: inline-block; max-width: 680px;
-  font-size: 11px; line-height: 1.7; color: var(--g400);
+  font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.7);
   letter-spacing: 0.01em;
   opacity: 0; transition: opacity 0.5s 0.5s var(--ease);
 }
@@ -296,14 +304,14 @@ img { max-width: 100%; display: block; }
 }
 .hero-arrow {
   width: 48px; height: 48px; border-radius: 50%;
-  border: 1.5px solid rgba(0,0,0,0.1);
-  background: rgba(255,255,255,0.8); backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.3); backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; pointer-events: all;
-  font-size: 18px; color: var(--black);
+  font-size: 18px; color: var(--white);
   transition: all 0.3s ease;
 }
-.hero-arrow:hover { background: var(--white); border-color: var(--black); transform: scale(1.05); }
+.hero-arrow:hover { background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.6); transform: scale(1.05); }
 
 .hero-dots {
   position: absolute; bottom: 32px; left: 50%;
@@ -312,10 +320,10 @@ img { max-width: 100%; display: block; }
 }
 .hero-dot {
   width: 10px; height: 10px; border-radius: 50%;
-  border: 1.5px solid var(--g400); background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.5); background: transparent;
   cursor: pointer; padding: 0; transition: all 0.3s ease;
 }
-.hero-dot.active { background: var(--red); border-color: var(--red); transform: scale(1.2); }
+.hero-dot.active { background: var(--white); border-color: var(--white); transform: scale(1.2); }
 
 /* Scroll indicator */
 .scroll-hint {
@@ -323,7 +331,7 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; gap: 12px;
 }
 .scroll-mouse {
-  width: 20px; height: 30px; border: 1.5px solid var(--g400);
+  width: 20px; height: 30px; border: 1.5px solid rgba(255,255,255,0.5);
   border-radius: 10px; position: relative;
 }
 .scroll-mouse::after {
@@ -333,7 +341,7 @@ img { max-width: 100%; display: block; }
   animation: scrollWheel 2s infinite;
 }
 @keyframes scrollWheel { 0%{ top:6px; opacity:1; } 100%{ top:16px; opacity:0; } }
-.scroll-text { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g400); }
+.scroll-text { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
 
 /* ─── CREDIBILITY STRIP ───────────────────────────────────── */
 .cred-strip {
@@ -630,49 +638,49 @@ img { max-width: 100%; display: block; }
     <!-- Slide 1 — Chairs -->
     <div class="hero-slide active">
       <div class="hero-bg">
-        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#f5f0eb 0%,#ede5da 40%,#e8dfd2 100%);"></div>
+        <img src="images/Hero-chairs.png" alt="Crown Audi Royal chair in premium Indian living room" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="hero-content">
         <h1>Your Design.<br>Our Surface.</h1>
         <a href="chairs-prototype.html" class="btn btn-primary">Explore Chairs</a>
       </div>
-      <div class="hero-desc"><span>Motion-blurred woman in white linen walking past Crown Audi Classic chairs in sharp focus. Studio setting, soft gray concrete, warm directional light. Film grain overlay.</span></div>
+      <div class="hero-desc"><span>Premium plastic moulded furniture. Designed in India, for India.</span></div>
     </div>
 
     <!-- Slide 2 — Tables -->
     <div class="hero-slide">
       <div class="hero-bg">
-        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#f0ede8 0%,#e5dfd6 40%,#ddd5ca 100%);"></div>
+        <img src="images/Hero-tables.png" alt="Crown Volvo dining table in modern Indian kitchen" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="hero-content">
         <h1>Where Life<br>Happens.</h1>
         <a href="tables-prototype.html" class="btn btn-primary">Explore Tables</a>
       </div>
-      <div class="hero-desc"><span>Man placing a steel plate onto a Crown Royal dining table. Kitchen-dining, clean white walls, morning window light. Table crisp, person a warm blur. Film grain.</span></div>
+      <div class="hero-desc"><span>Tables built for everyday Indian life. Dining, center, side, folding.</span></div>
     </div>
 
     <!-- Slide 3 — Stools -->
     <div class="hero-slide">
       <div class="hero-bg">
-        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#eceae6 0%,#e2ddd5 40%,#d8d2c8 100%);"></div>
+        <img src="images/Hero-stools.png" alt="Crown Lego stools stacked in Indian chai shop" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="hero-content">
         <h1>Small Seat.<br>Big Impact.</h1>
         <a href="stools-prototype.html" class="btn btn-primary">Explore Stools</a>
       </div>
-      <div class="hero-desc"><span>Person lifting a Crown stool from a stack of 8. Chai-shop context. Stack crisp and centered, person a blur of action. Bright ambient light, film grain.</span></div>
+      <div class="hero-desc"><span>Stackable. Sturdy. Made for the busiest spaces in India.</span></div>
     </div>
 
     <!-- Slide 4 — Storage -->
     <div class="hero-slide">
       <div class="hero-bg">
-        <div class="ph" style="width:100%;height:100%;border-radius:0;background:linear-gradient(135deg,#e8e8ec 0%,#dddde4 40%,#d2d2dc 100%);"></div>
+        <img src="images/Hero-storage.png" alt="Crown Leo Medium storage cabinet in Indian bedroom" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="hero-content">
         <h1>Everything<br>Has a Place.</h1>
         <a href="storage-prototype.html" class="btn btn-primary">Explore Storage</a>
       </div>
-      <div class="hero-desc"><span>Person rolling a Crown 4-tier trolley through a bright modern kitchen. Trolley sharp and organized. Person a streak of purposeful movement. Film grain.</span></div>
+      <div class="hero-desc"><span>Organize your home with Crown Leo storage cabinets.</span></div>
     </div>
   </div>
 
@@ -711,8 +719,8 @@ img { max-width: 100%; display: block; }
     </div>
     <div class="cat-grid">
       <a href="chairs-prototype.html" class="cat-card reveal" data-delay="1">
-        <div class="ph" style="height:260px;background:linear-gradient(135deg,#f5f0eb,#e2d8cc);">
-          <span class="ph-label">Chairs — Audi Classic, Trump, Ferrari, Polo</span>
+        <div class="ph" style="height:260px;border-radius:0;overflow:hidden;">
+          <img src="images/cat-chair.png" alt="Crown Chairs Collection" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="cat-card-info">
           <h4>Chairs</h4>
@@ -721,8 +729,8 @@ img { max-width: 100%; display: block; }
         </div>
       </a>
       <a href="tables-prototype.html" class="cat-card reveal" data-delay="2">
-        <div class="ph" style="height:260px;background:linear-gradient(135deg,#f0ede8,#ddd5c8);">
-          <span class="ph-label">Tables — Dining, center, side, folding</span>
+        <div class="ph" style="height:260px;border-radius:0;overflow:hidden;">
+          <img src="images/Cat-table.png" alt="Crown Tables Collection" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="cat-card-info">
           <h4>Tables</h4>
@@ -731,8 +739,8 @@ img { max-width: 100%; display: block; }
         </div>
       </a>
       <a href="stools-prototype.html" class="cat-card reveal" data-delay="3">
-        <div class="ph" style="height:260px;background:linear-gradient(135deg,#eceae6,#d8d2c8);">
-          <span class="ph-label">Stools — Stackable, step, bathroom</span>
+        <div class="ph" style="height:260px;border-radius:0;overflow:hidden;">
+          <img src="images/cat-stools.png" alt="Crown Stools Collection" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="cat-card-info">
           <h4>Stools</h4>
@@ -741,12 +749,12 @@ img { max-width: 100%; display: block; }
         </div>
       </a>
       <a href="storage-prototype.html" class="cat-card reveal" data-delay="4">
-        <div class="ph" style="height:260px;background:linear-gradient(135deg,#e8e8ec,#d0d0d8);">
-          <span class="ph-label">Storage — Trolleys, racks, organizers</span>
+        <div class="ph" style="height:260px;border-radius:0;overflow:hidden;">
+          <img src="images/Cat-storage.png" alt="Crown Storage Collection" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="cat-card-info">
           <h4>Storage</h4>
-          <p>Trolleys, racks, organizers</p>
+          <p>Cabinets, racks, organizers</p>
           <span class="arrow">Explore &#8594;</span>
         </div>
       </a>
