@@ -527,6 +527,27 @@ img { max-width: 100%; display: block; }
   color: var(--g500);
 }
 
+/* Center-aligned storage layout */
+.spotlight-center { text-align: center; }
+.spotlight-center .spotlight-desc { max-width: 540px; }
+.spotlight-storage-images {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; margin-top: 48px; max-width: 900px; margin-left: auto; margin-right: auto;
+}
+.spotlight-storage-item {
+  border-radius: 10px; overflow: hidden;
+  transition: transform 0.3s var(--ease);
+}
+.spotlight-storage-item:hover { transform: translateY(-6px); }
+.spotlight-storage-item img {
+  width: 100%; height: 380px; object-fit: cover; border-radius: 10px;
+}
+.storage-label {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; text-align: center; padding: 16px 0 0;
+  color: var(--g500);
+}
+
 /* ─── STORY / PATH SECTIONS ───────────────────────────────── */
 .story { padding: 100px 0; }
 .story.dark { background: var(--black); color: var(--white); }
@@ -686,6 +707,9 @@ img { max-width: 100%; display: block; }
   .spotlight-compare { gap: 12px; }
   .spotlight-compare-item img { height: 120px; }
 
+  .spotlight-storage-images { gap: 20px; }
+  .spotlight-storage-item img { height: 280px; }
+
   .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .cat-card .ph { height: 180px; }
   .cat-card-info { padding: 14px; }
@@ -732,6 +756,8 @@ img { max-width: 100%; display: block; }
   .spotlight-card-info { padding: 12px; }
   .spotlight-lifestyle-img img { height: 280px; }
   .spotlight-compare-item img { height: 100px; }
+  .spotlight-storage-images { grid-template-columns: 1fr; gap: 16px; }
+  .spotlight-storage-item img { height: 240px; }
   .footer-top { grid-template-columns: 1fr; }
 }
 </style>
@@ -901,137 +927,78 @@ img { max-width: 100%; display: block; }
 </section>
 
 <!-- ═══ SPOTLIGHT 1: CHAIRS — AUDI SERIES ═══ -->
+<!-- Image: Generate with Audi Royal Hero.png + refs (Classic, Vintage, Duo, product motion ref) -->
 <section class="spotlight spotlight-dark">
   <div class="container">
     <div class="spotlight-split">
-      <div class="spotlight-hero-img reveal-left">
-        <img src="images/products/Audi Royal Hero.png" alt="Crown Audi Royal Chair">
-      </div>
-      <div class="reveal-right">
+      <div class="reveal-left">
         <p class="caption">Best-Selling Chairs</p>
-        <h2>The Audi Series. Designed to Be Noticed.</h2>
+        <h2>The Audi Series.<br>Designed to Be Noticed.</h2>
         <p class="spotlight-desc">Four distinct personalities — one unmistakable standard. From the boardroom to the banquet hall, Audi is the chair people remember.</p>
         <a href="chairs-prototype.html" class="btn btn-primary">Explore All Chairs</a>
-        <div class="spotlight-variants">
-          <div class="spotlight-variant reveal" data-delay="1">
-            <img src="images/products/Audi Classic Hero.png" alt="Audi Classic">
-            <div class="variant-name">Classic</div>
-          </div>
-          <div class="spotlight-variant reveal" data-delay="2">
-            <img src="images/products/Audi Vintage Hero.png" alt="Audi Vintage">
-            <div class="variant-name">Vintage</div>
-          </div>
-          <div class="spotlight-variant reveal" data-delay="3">
-            <img src="images/products/Audi Duo.png" alt="Audi Duo">
-            <div class="variant-name">Duo</div>
-          </div>
-        </div>
+      </div>
+      <div class="spotlight-hero-img reveal-right">
+        <img src="images/products/chairs-spotlight.png" alt="Crown Audi Series — Royal, Classic, Vintage, Duo chairs in editorial arrangement">
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══ SPOTLIGHT 2: STOOLS — LEGO + JAGUAR ═══ -->
+<!-- Image: Generate with Lego 18'' Orange.png + refs (Lego 12'', Jaguar Blue, Jaguar Red, Playful ref) -->
 <section class="spotlight spotlight-light">
   <div class="container">
-    <div class="spotlight-stage">
-      <div class="reveal">
+    <div class="spotlight-split reversed">
+      <div class="reveal-right">
         <p class="caption">Best-Selling Stools</p>
-        <h2>Stack. Sit. Stand Out.</h2>
-        <p class="spotlight-desc" style="margin-left:auto;margin-right:auto;">From café counters to kitchen islands — Lego and Jaguar stools bring color, comfort, and a shape that stacks beautifully.</p>
-      </div>
-      <div class="stage-hero reveal-scale">
-        <img src="images/products/Lego 18'' Orange.png" alt="Crown Lego 18 inch Orange Stool">
-      </div>
-      <div class="spotlight-cards">
-        <div class="spotlight-card reveal" data-delay="1">
-          <img src="images/products/Lego 12''.png" alt="Lego 12 inch">
-          <div class="spotlight-card-info">
-            <h4>Lego 12"</h4>
-            <p>Compact counter stool</p>
-          </div>
-        </div>
-        <div class="spotlight-card reveal" data-delay="2">
-          <img src="images/products/Lego 18''.png" alt="Lego 18 inch">
-          <div class="spotlight-card-info">
-            <h4>Lego 18"</h4>
-            <p>Bar-height stool</p>
-          </div>
-        </div>
-        <div class="spotlight-card reveal" data-delay="3">
-          <img src="images/products/Jaguar Royal Blue.png" alt="Jaguar Royal Blue">
-          <div class="spotlight-card-info">
-            <h4>Jaguar Blue</h4>
-            <p>Bold, curved comfort</p>
-          </div>
-        </div>
-        <div class="spotlight-card reveal" data-delay="4">
-          <img src="images/products/Jaguar Royal Red.png" alt="Jaguar Royal Red">
-          <div class="spotlight-card-info">
-            <h4>Jaguar Red</h4>
-            <p>Statement red finish</p>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:40px;" class="reveal" data-delay="5">
+        <h2>Stack. Sit.<br>Stand Out.</h2>
+        <p class="spotlight-desc">From café counters to kitchen islands — Lego and Jaguar stools bring color, comfort, and a shape that stacks beautifully.</p>
         <a href="stools-prototype.html" class="btn btn-secondary">Explore All Stools</a>
+      </div>
+      <div class="spotlight-hero-img reveal-left">
+        <img src="images/products/stools-spotlight.png" alt="Crown Lego and Jaguar stools in playful floating arrangement">
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══ SPOTLIGHT 3: TABLES — CROMA, ACE, PRESTIGE, VOLVO ═══ -->
+<!-- Image: Generate with Volvo.png + refs (Croma Brown, Upselling format 2 ref, subtle product display) -->
 <section class="spotlight spotlight-dark">
   <div class="container">
     <div class="spotlight-split">
-      <div class="reveal-left">
+      <div class="spotlight-hero-img reveal-left">
+        <img src="images/products/tables-spotlight.png" alt="Crown Volvo and Croma tables in editorial lineup">
+      </div>
+      <div class="reveal-right">
         <p class="caption">Best-Selling Tables</p>
-        <h2>Every Surface Tells a Story.</h2>
+        <h2>Every Surface<br>Tells a Story.</h2>
         <p class="spotlight-desc">Wood-grain precision. Stone-finish sophistication. Crown tables set the tone for every space — from dining halls to outdoor terraces.</p>
         <a href="tables-prototype.html" class="btn btn-primary">Explore All Tables</a>
-        <div class="spotlight-variants">
-          <div class="spotlight-variant reveal" data-delay="1">
-            <img src="images/products/Croma Brown.png" alt="Croma Brown">
-            <div class="variant-name">Croma</div>
-          </div>
-          <div class="spotlight-variant reveal" data-delay="2">
-            <img src="images/products/Ace Royal Beige.png" alt="Ace Royal Beige">
-            <div class="variant-name">Ace Royal</div>
-          </div>
-          <div class="spotlight-variant reveal" data-delay="3">
-            <img src="images/products/Prestige Royal Red.png" alt="Prestige Royal Red">
-            <div class="variant-name">Prestige</div>
-          </div>
-        </div>
-      </div>
-      <div class="spotlight-hero-img reveal-right">
-        <img src="images/products/Volvo.png" alt="Crown Volvo Table">
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══ SPOTLIGHT 4: STORAGE — LEO SERIES ═══ -->
+<!-- Image: Generate with LEO MEDIUM 3.jpg + refs (leo small one.jpg, subtle product display) -->
 <section class="spotlight spotlight-white">
   <div class="container">
-    <div class="spotlight-lifestyle">
-      <div class="spotlight-lifestyle-img reveal-left">
-        <img src="images/products/LEO MEDIUM 3.jpg" alt="Crown Leo Medium 4ft Storage Cabinet">
-      </div>
-      <div class="reveal-right">
+    <div class="spotlight-center">
+      <div class="reveal">
         <p class="caption" style="color:var(--red);">Best-Selling Storage</p>
         <h2>The Leo Series. Order Without Compromise.</h2>
-        <p class="spotlight-desc">Clean lines, clever compartments, real wood-grain finish. Leo cabinets organize your space without cluttering your style.</p>
+        <p class="spotlight-desc" style="margin-left:auto;margin-right:auto;">Clean lines, clever compartments, real wood-grain finish. Leo cabinets organize your space without cluttering your style.</p>
         <a href="storage-prototype.html" class="btn btn-primary">Explore All Storage</a>
-        <div class="spotlight-compare">
-          <div class="spotlight-compare-item reveal" data-delay="1">
-            <img src="images/products/LEO MEDIUM 3.jpg" alt="Leo Medium 4ft">
-            <div class="compare-name">Leo Medium · 4ft</div>
-          </div>
-          <div class="spotlight-compare-item reveal" data-delay="2">
-            <img src="images/products/leo small one.jpg" alt="Leo Small 2ft">
-            <div class="compare-name">Leo Small · 2ft</div>
-          </div>
+      </div>
+      <div class="spotlight-storage-images">
+        <div class="spotlight-storage-item reveal" data-delay="1">
+          <img src="images/products/LEO MEDIUM 3.jpg" alt="Crown Leo Medium 4ft Storage Cabinet">
+          <div class="storage-label">Leo Medium · 4ft</div>
+        </div>
+        <div class="spotlight-storage-item reveal" data-delay="2">
+          <img src="images/products/leo small one.jpg" alt="Crown Leo Small 2ft Storage Cabinet">
+          <div class="storage-label">Leo Small · 2ft</div>
         </div>
       </div>
     </div>
